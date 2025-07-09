@@ -1,0 +1,24 @@
+nb-card {
+    padding: 0 !important;
+    height: 100%;
+
+    nb-card-body {
+        overflow: unset;
+    }
+
+    nb-list {
+        height: 60vh;
+
+        nb-list-item:hover {
+            background-color: #4C4C4C09;
+            cursor: pointer;
+        }
+    }
+}
+
+img.rounded-circle {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}

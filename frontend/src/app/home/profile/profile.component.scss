@@ -1,0 +1,33 @@
+@use '../../../themes' as *; // Adjust the path as per your project structure
+
+.profile-image {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+    margin: auto;
+    background-size: contain;
+    background-position: center;
+    border: solid 1px nb-theme(color-basic-transparent-200);
+
+    .top-layer {
+        background-color: #bebebe;
+        border-radius: 50%;
+        opacity: 0.3;
+
+        nb-icon {
+            margin-top: 70px;
+            color: nb-theme(color-basic-200);
+            font-size: 3rem;
+        }
+    }
+
+    .top-layer:hover {
+        opacity: 0.8;
+        cursor: pointer;
+
+        nb-icon {
+            color: nb-theme(color-basic-100);
+        }
+    }
+
+}

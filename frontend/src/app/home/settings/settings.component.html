@@ -1,0 +1,30 @@
+<div class="container h-100">
+    <div class="row no-gutters row-eq-height justify-content-center h-100">
+
+        <div class="col-md-5 col-lg-4 h-100">
+            <nb-card>
+                <nb-card-header>
+                    <h6>Settings</h6>
+                </nb-card-header>
+                <nb-card-body class="left-card-body">
+                    <nb-list>
+                        <nb-list-item *ngFor="let setting of settings">
+                            {{ setting }}
+                        </nb-list-item>
+                    </nb-list>
+                </nb-card-body>
+            </nb-card>
+        </div>
+        <div class="col-md-7 col-lg-8 h-100 d-none d-md-block">
+            <nb-card>
+                <nb-card-body>
+                    <h6>Detail</h6>
+                    <button nbButton outline status="secondary" (click)="back()" size="large" class="mt-3 ml-3">
+                        Back
+                    </button>
+                </nb-card-body>
+            </nb-card>
+        </div>
+
+    </div>
+</div>
