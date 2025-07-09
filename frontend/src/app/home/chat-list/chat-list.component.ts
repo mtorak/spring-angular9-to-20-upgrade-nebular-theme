@@ -77,7 +77,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
   }
 
   chatClicked(id: string) {
-    this.router.navigate([id], { relativeTo: this.route, skipLocationChange: true })
+    this.router.navigate([id], { relativeTo: this.route, skipLocationChange: false })
   }
 
   findChat(value: string) {

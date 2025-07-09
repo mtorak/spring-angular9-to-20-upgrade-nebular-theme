@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, VERSION } from '@angular/core';
 
 @Component({
   selector: 'app-chat-banner',
@@ -6,6 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-banner.component.scss']
 })
 export class ChatBannerComponent implements OnInit {
+
+  angularVersion = VERSION.major + '.' + VERSION.minor;
 
   constructor() { }
 
