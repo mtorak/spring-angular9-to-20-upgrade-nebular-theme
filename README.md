@@ -65,6 +65,17 @@ Below update required ng2-file-upload:<br>
 So tried below update, it automatically updated Angular version to 14!<br> 
 `npx ng update ng2-file-upload@3.0.0`<br>
 
+Update remaining un-updated packages:<br>
+`npx ng update @angular-devkit/build-angular@14 @angular/cli@14 @schematics/angular@14`
+
+After `npx ng serve` command, below nebular sass compile error appeared:<br>
+
+./node_modules/@nebular/theme/styles/prebuilt/dark.scss - Error: Module build failed (from ./node_modules/mini-css-extract-plugin/dist/loader.js):<br>
+HookWebpackError: Module build failed (from ./node_modules/sass-loader/dist/cjs.js):<br>
+SassError: Expected whitespace.<br>
+
+Tried to update @nebular/theme to 10.0.0:<br>
+
 
 ## Technologies/Design Decisions
 
