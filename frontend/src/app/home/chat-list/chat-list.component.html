@@ -17,8 +17,9 @@
 
   <nb-card-body>
     <nb-form-field>
-      <input nbInput fullWidth name="search" #search placeholder="Search" (input)="findChat(search.value)">
-      <button nbSuffix nbButton ghost (click)="search.value='';clear()">
+      <input nbInput fullWidth name="search" #search [(ngModel)]="searchValue" placeholder="Search"
+        (input)="findChat(search.value)">
+      <button nbSuffix nbButton ghost (click)="clear()">
         <nb-icon icon="close-outline"></nb-icon>
       </button>
     </nb-form-field>
