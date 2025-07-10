@@ -41,6 +41,17 @@
 // below command also updates @angular/cdk to 12<br>
 `npx ng update @nebular/eva-icons@8.0.0 @nebular/theme@8.0.0`<br>
 
+After nebular@8 update, below error started to appear:<br>
+DEPRECATION WARNING: Using / for division is deprecated and will be removed in Dart Sass 2.0.0.<br>
+Recommendation: math.div(nb-theme(stepper-step-index-width), 2)<br>
+More info and automated migrator: https://sass-lang.com/d/slash-div<br>
+
+***Above case fixed in nebular@9.0.0 which is compatible with angular 13***<br>
+***So will not update to nebular@9.0.0 now, will continue to update angular 12 and 13 first, then update to nebular@9.0.0***
+
+### Update 12 to 13
+
+
 ## Technologies/Design Decisions
 
 - Backend: Spring Boot 2.2 with Kotlin 
