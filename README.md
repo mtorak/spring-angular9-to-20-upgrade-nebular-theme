@@ -50,6 +50,8 @@ More info and automated migrator: https://sass-lang.com/d/slash-div<br>
 ***So will not update to nebular@9.0.0 now, will continue to update angular 12 and 13 first, then update to nebular@9.0.0***
 
 ### Update 12 to 13
+`nvm use 14`<br>
+
 
 
 ## Technologies/Design Decisions
