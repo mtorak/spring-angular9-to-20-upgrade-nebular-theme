@@ -75,6 +75,9 @@ HookWebpackError: Module build failed (from ./node_modules/sass-loader/dist/cjs.
 SassError: Expected whitespace.<br>
 
 Tried to update @nebular/theme to 10.0.0:<br>
+`npx ng update @nebular/eva-icons@10.0.0 @nebular/theme@10.0.0`
+
+Above command updated @nebular to 10 and @angular/cdk to 14
 
 
 ## Technologies/Design Decisions
