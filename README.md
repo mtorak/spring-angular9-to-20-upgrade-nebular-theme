@@ -3,6 +3,34 @@
 ![Cover Image](./images/chat.png)
 1-1 instant messaging project designed to demonstrate WebSockets in a load-balanced environment. Users can register, login/logout, see a friendslist, private message all in realtime. WebSocket usages include user presence monitoring, notifications, and chat messages.
 
+# Update Angular from 9 to 20
+
+### Update 9 to 10
+`nvm use 22`<br>
+`npx @angular/cli@10 update @angular/core@10 @angular/cli@10`
+
+***manual update:***
+- "@angular/cdk": "^10.2.5"
+- "@schematics/angular": "~10.2.4"
+- "@nebular/eva-icons": "^6.2.1"
+- "@nebular/theme": "^6.2.1"
+
+`nvm use 12`<br>
+`npm i`
+
+
+### Update 10 to 11
+`npx ng update @angular/core@11 @angular/cli@11`
+
+***manual update:***
+- "@stomp/stompjs": "^6.0.0"
+- "sockjs-client": "^1.5.0"
+- "@schematics/angular": "~11.2.14"
+
+// below command also updates @angular/cdk to 11<br>
+`npx ng update @nebular/eva-icons@7.0.0 @nebular/theme@7.0.0`
+
+
 ## Technologies/Design Decisions
 
 - Backend: Spring Boot 2.2 with Kotlin 
