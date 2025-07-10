@@ -79,6 +79,17 @@ Tried to update @nebular/theme to 10.0.0:<br>
 
 Above command updated @nebular to 10 and @angular/cdk to 14
 
+### Update 14 to 15
+`nvm use 16`<br>
+`npx ng update @angular/core@15 @angular/cli@15`
+
+After this update below warning appeared:<br>
+Deprecation This operation is parsed as:
+    "Nebular Theme: `nb-theme()` cannot find value for key `" + $key + "` for theme `" + theming-variables.$nb-theme-name + "<br>
+
+So, tried nebular theme update to 11:<br>
+`npx ng update @nebular/eva-icons@11.0.0 @nebular/theme@11.0.0`
+
 
 ## Technologies/Design Decisions
 
