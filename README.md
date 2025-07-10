@@ -5,6 +5,11 @@
 
 # Update Angular from 9 to 20
 
+### Upgrade from Angular 9 to 20 Case Study
+- Update guide: https://angular.dev/update-guide?v=9.0-20.0&l=3
+- As a rule of thumb, keep node version greater than Angular version. Example: node version 12 and Angular version 10
+- Use even numbered node versions(LTS) 
+  
 ### Update 9 to 10
 `nvm use 22`<br>
 `npx @angular/cli@10 update @angular/core@10 @angular/cli@10`
