@@ -85,6 +85,10 @@ export class ChatListComponent implements OnInit, OnDestroy {
     this.friends = this.chatService.getFriends(value);
   }
 
+  clear() {
+    this.findChat('');
+  }
+
   ngOnDestroy(): void {
     if (this.menuSubscription)
       this.menuSubscription.unsubscribe();
