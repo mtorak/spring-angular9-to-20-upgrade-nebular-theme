@@ -35,6 +35,11 @@
 // below command also updates @angular/cdk to 11<br>
 `npx ng update @nebular/eva-icons@7.0.0 @nebular/theme@7.0.0`
 
+### Update 11 to 12
+`npx ng update @angular/core@12 @angular/cli@12`<br>
+
+// below command also updates @angular/cdk to 12<br>
+`npx ng update @nebular/eva-icons@8.0.0 @nebular/theme@8.0.0`<br>
 
 ## Technologies/Design Decisions
 
