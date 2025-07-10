@@ -101,6 +101,8 @@ After `npm i` got some ng2-file-upload - angular dependency errors, so updated n
 
 ### Update 15 to 16
 `nvm use 18`<br>
+`npx  ng update @angular/core@16 @angular/cli@16`
+`npx ng update @nebular/eva-icons@12.0.0 @nebular/theme@12.0.0`
 
 
 
