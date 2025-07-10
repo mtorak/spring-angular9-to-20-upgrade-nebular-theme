@@ -32,6 +32,10 @@ class ChatController(
     @Autowired val fileStorageService: FileStorageService
 ) {
 
+    companion object {
+        const val USER_CHAT_BASE_URI = "/api/chat"
+    }
+
     @GetMapping
     fun getFriends(@RequestParam("from", required = false) from: String?): ResponseEntity<List<FriendProfileResponse>> {
         val user = getCurrentUser()
@@ -127,7 +131,4 @@ class ChatController(
         return SecurityContextHolder.getContext().authentication.principal as UserPrincipal
     }
 
-    companion object {
-        const val USER_CHAT_BASE_URI = "/api/chat"
-    }
 }
