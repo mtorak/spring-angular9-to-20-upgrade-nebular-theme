@@ -99,6 +99,8 @@ Above command updated @angular/cdk to 15
 After `npm i` got some ng2-file-upload - angular dependency errors, so updated ng2-file-upload also:<br>
 `npx ng update ng2-file-upload@4.0.0<br>`
 
+### Update 15 to 16
+`nvm use 18`<br>
 
 
 
