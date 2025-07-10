@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/_services/auth.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { SignInRequest } from 'src/app/_dtos/auth/SignInRequest';
 import { SignInResponse } from 'src/app/_dtos/auth/SignInResponse';
 import { Router } from '@angular/router';
@@ -15,12 +15,12 @@ import { NbToastrService } from '@nebular/theme';
 export class SigninComponent implements OnInit {
 
   loading: Boolean = false
-  signInFrom: FormGroup
+  signInFrom: UntypedFormGroup
   redirect = "/"
 
   constructor(
     private _authService: AuthService,
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
     private toastrService: NbToastrService) {
     this.signInFrom = this.fb.group({

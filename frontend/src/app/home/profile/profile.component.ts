@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { UserService } from 'src/app/_services/user.service';
 import { UserProfile } from 'src/app/_dtos/user/UserProfile';
 
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { FileUploader, FileUploaderOptions } from "ng2-file-upload";
 import { AuthService } from 'src/app/_services/auth.service';
 import { throwError } from 'rxjs';
@@ -21,14 +21,14 @@ export class ProfileComponent implements OnInit {
   profile: UserProfile
 
   uploader: FileUploader;
-  imageForm: FormGroup;
+  imageForm: UntypedFormGroup;
   uploadStatus: number;
 
   constructor(
     private userService: UserService,
     private tokenStorageService: TokenStorageService,
     private router: Router,
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private authService: AuthService) {
 
     this.profile = this.userService.getProfile()

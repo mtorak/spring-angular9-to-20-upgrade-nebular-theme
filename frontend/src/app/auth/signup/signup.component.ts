@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { AuthService } from 'src/app/_services/auth.service';
 import { Router } from '@angular/router';
 import { SignUpRequest } from 'src/app/_dtos/auth/SignUpRequest';
@@ -15,9 +15,9 @@ import { DialogSuccessComponent } from 'src/app/shared/dialog/dialog-alert/dialo
 export class SignupComponent implements OnInit {
 
   loading: Boolean = false
-  signUpFrom: FormGroup
+  signUpFrom: UntypedFormGroup
 
-  constructor(private _authService: AuthService, private fb: FormBuilder, private router: Router, private dialogService: NbDialogService) {
+  constructor(private _authService: AuthService, private fb: UntypedFormBuilder, private router: Router, private dialogService: NbDialogService) {
     this.signUpFrom = this.fb.group({
       email: [],
       password: [],

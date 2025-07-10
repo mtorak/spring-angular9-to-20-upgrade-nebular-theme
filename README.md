@@ -59,6 +59,11 @@ More info and automated migrator: https://sass-lang.com/d/slash-div<br>
 - "@schematics/angular": "~13.3.11"
 
 ### Update 13 to 14
+Below update required ng2-file-upload:<br>
+`npx ng update @angular/core@14 @angular/cli@14` <br>
+
+So tried below update, it automatically updated Angular version to 14!<br> 
+`npx ng update ng2-file-upload@3.0.0`<br>
 
 
 ## Technologies/Design Decisions
