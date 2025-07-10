@@ -7,7 +7,7 @@ import { ChatService } from 'src/app/_services/chat.service';
     <nb-card class="dialog-card">
       <nb-card-header>Enter Your Friend Email</nb-card-header>
       <nb-card-body>
-        <input #email nbInput placeholder="Email" type="email">
+        <input #email nbInput placeholder="Email" type="email" (keyup.enter)="submit(email.value)">
       </nb-card-body>
       <nb-card-footer class="text-center">
         <button nbButton (click)="submit(email.value)" status="primary" class="m-2">Submit</button>
@@ -46,7 +46,6 @@ export class NewChatComponent {
         }
       )
     }
-
   }
 
 }
