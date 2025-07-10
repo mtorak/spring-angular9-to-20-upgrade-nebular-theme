@@ -51,7 +51,12 @@ More info and automated migrator: https://sass-lang.com/d/slash-div<br>
 
 ### Update 12 to 13
 `nvm use 14`<br>
+`npx ng update @angular/core@13 @angular/cli@13`<br>
+// below command updates @angular/cdk to 13<br>
+`npx ng update @nebular/eva-icons@9.0.0 @nebular/theme@9.0.0`<br>
 
+***manual update***<br>
+- "@schematics/angular": "~13.3.11"
 
 
 ## Technologies/Design Decisions
