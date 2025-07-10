@@ -46,8 +46,8 @@ DEPRECATION WARNING: Using / for division is deprecated and will be removed in D
 Recommendation: math.div(nb-theme(stepper-step-index-width), 2)<br>
 More info and automated migrator: https://sass-lang.com/d/slash-div<br>
 
-***Above case fixed in nebular@9.0.0 which is compatible with angular 13***<br>
-***So will not update to nebular@9.0.0 now, will continue to update angular 12 and 13 first, then update to nebular@9.0.0***
+***Above case fixed in nebular@9.0.0 which is compatible with Angular 13***<br>
+***So will not update to nebular@9.0.0 now, will continue to update Angular to 13 first, then update to nebular@9.0.0***
 
 ### Update 12 to 13
 `nvm use 14`<br>
@@ -57,6 +57,8 @@ More info and automated migrator: https://sass-lang.com/d/slash-div<br>
 
 ***manual update***<br>
 - "@schematics/angular": "~13.3.11"
+
+### Update 13 to 14
 
 
 ## Technologies/Design Decisions
