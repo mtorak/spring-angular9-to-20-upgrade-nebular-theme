@@ -90,6 +90,17 @@ Deprecation This operation is parsed as:
 So, tried nebular theme update to 11:<br>
 `npx ng update @nebular/eva-icons@11.0.0 @nebular/theme@11.0.0`
 
+Above command updated @angular/cdk to 15
+
+***manual update***<br>
+- "jasmine-core": "~4.5.0"
+- "jasmine-spec-reporter": "~6.0.0"
+
+After `npm i` got some ng2-file-upload - angular dependency errors, so updated ng2-file-upload also:<br>
+`npx ng update ng2-file-upload@4.0.0<br>`
+
+
+
 
 ## Technologies/Design Decisions
 
