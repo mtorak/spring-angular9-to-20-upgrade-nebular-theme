@@ -36,6 +36,10 @@ class AccountController(
         @Autowired private val tokenProvider: TokenProvider
 ) {
 
+    companion object {
+        const val AUTH_BASE_URI = "/api/account"
+    }
+
     @PostMapping("/signin")
     fun authenticateUser(@Valid @RequestBody loginRequest: LoginRequest): ResponseEntity<AuthResponse>? {
         val authentication: Authentication = authenticationManager.authenticate(
@@ -48,7 +52,16 @@ class AccountController(
         val token = tokenProvider.createToken(authentication)
         val userPrincipal = authentication.principal as UserPrincipal
 
-        return ResponseEntity.ok(AuthResponse(accessToken = token, name = userPrincipal.mName, email = userPrincipal.mEmail, imageUrl = userPrincipal.mImgUrl, id = userPrincipal.id))
+        return ResponseEntity
+            .ok(
+            AuthResponse(
+                accessToken = token,
+                name = userPrincipal.mName,
+                email = userPrincipal.mEmail,
+                imageUrl = userPrincipal.mImgUrl,
+                id = userPrincipal.id
+            )
+        )
     }
 
     @PostMapping("/signup")
@@ -71,8 +84,4 @@ class AccountController(
         return ResponseEntity.ok(ApiResponse(true, "User registered successfully@"))
     }
 
-
-    companion object {
-        const val AUTH_BASE_URI = "/api/account"
-    }
 }
