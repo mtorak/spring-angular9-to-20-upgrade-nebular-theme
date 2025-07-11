@@ -119,6 +119,13 @@ After nebular 13 updated below error appeared:<br>
 So updated to nebular 14:<br>
 `npx ng update @nebular/eva-icons@14.0.0 @nebular/theme@14.0.0`<br>
 
+Above command also updated Angular from 17 to 18 :/
+
+`npx ng update @angular/core@18 @angular/cli@18`
+
+After these updates, ng2-file-upload dependency errors appeared:<br>
+`npx ng update ng2-file-upload@7.0.0<br>`
+
 
 ## Technologies/Design Decisions
 
