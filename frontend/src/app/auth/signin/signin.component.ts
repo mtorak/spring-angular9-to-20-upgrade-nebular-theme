@@ -8,9 +8,10 @@ import { environment } from '../../../environments/environment';
 import { NbToastrService } from '@nebular/theme';
 
 @Component({
-  selector: 'app-signin',
-  templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss']
+    selector: 'app-signin',
+    templateUrl: './signin.component.html',
+    styleUrls: ['./signin.component.scss'],
+    standalone: false
 })
 export class SigninComponent implements OnInit {
 

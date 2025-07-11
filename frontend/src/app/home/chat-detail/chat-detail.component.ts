@@ -7,9 +7,10 @@ import { UserService } from 'src/app/_services/user.service';
 import { NbMessage } from 'src/app/_dtos/chat/NbMessage';
 
 @Component({
-  selector: 'app-chat-detail',
-  templateUrl: './chat-detail.component.html',
-  styleUrls: ['./chat-detail.component.scss']
+    selector: 'app-chat-detail',
+    templateUrl: './chat-detail.component.html',
+    styleUrls: ['./chat-detail.component.scss'],
+    standalone: false
 })
 export class ChatDetailComponent implements OnInit {
 

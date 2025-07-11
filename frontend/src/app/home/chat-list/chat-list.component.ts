@@ -11,9 +11,10 @@ import { NewChatComponent } from './new-chat/new-chat.component';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'home-chat-list',
-  templateUrl: './chat-list.component.html',
-  styleUrls: ['./chat-list.component.scss']
+    selector: 'home-chat-list',
+    templateUrl: './chat-list.component.html',
+    styleUrls: ['./chat-list.component.scss'],
+    standalone: false
 })
 export class ChatListComponent implements OnInit, OnDestroy {
 

@@ -6,9 +6,10 @@ import { UserProfile } from 'src/app/_dtos/user/UserProfile';
 import { delay } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-token',
-  templateUrl: './token.component.html',
-  styleUrls: ['./token.component.scss']
+    selector: 'app-token',
+    templateUrl: './token.component.html',
+    styleUrls: ['./token.component.scss'],
+    standalone: false
 })
 export class TokenComponent implements OnInit {
 

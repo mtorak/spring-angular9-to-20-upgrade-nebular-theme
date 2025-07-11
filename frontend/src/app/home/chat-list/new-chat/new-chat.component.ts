@@ -3,7 +3,7 @@ import { NbDialogRef, NbToastrService } from '@nebular/theme';
 import { ChatService } from 'src/app/_services/chat.service';
 
 @Component({
-  template: `
+    template: `
     <nb-card class="dialog-card">
       <nb-card-header>Enter Your Friend Email</nb-card-header>
       <nb-card-body>
@@ -20,6 +20,7 @@ import { ChatService } from 'src/app/_services/chat.service';
       </nb-card-footer>
     </nb-card>
     `,
+    standalone: false
 })
 export class NewChatComponent {
 

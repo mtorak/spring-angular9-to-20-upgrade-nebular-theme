@@ -4,9 +4,10 @@ import { ChatService } from 'src/app/_services/chat.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'home-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss']
+    selector: 'home-chat',
+    templateUrl: './chat.component.html',
+    styleUrls: ['./chat.component.scss'],
+    standalone: false
 })
 export class ChatComponent implements OnInit {
 

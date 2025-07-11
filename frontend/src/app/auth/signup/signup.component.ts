@@ -8,9 +8,10 @@ import { NbDialogService } from '@nebular/theme';
 import { DialogSuccessComponent } from 'src/app/shared/dialog/dialog-alert/dialog-success.component';
 
 @Component({
-  selector: 'app-signup',
-  templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+    selector: 'app-signup',
+    templateUrl: './signup.component.html',
+    styleUrls: ['./signup.component.scss'],
+    standalone: false
 })
 export class SignupComponent implements OnInit {
 
