@@ -1,12 +1,16 @@
 package com.squrlabs.sca.web.controller.user
 
 import com.squrlabs.sca.config.AppProperties
+import com.squrlabs.sca.config.auth.util.UserPrincipal
 import com.squrlabs.sca.domain.model.user.UploadResponse
 import com.squrlabs.sca.domain.service.user.UserService
-import com.squrlabs.sca.util.auth.util.UserPrincipal
 import com.squrlabs.sca.web.controller.user.UserController.Companion.USER_BASE_URI
 import com.squrlabs.sca.web.dto.user.UserProfile
 import io.swagger.v3.oas.annotations.tags.Tag
+import java.nio.file.Files
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
+import java.util.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -18,10 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
-import java.util.UUID
 
 @RestController
 @RequestMapping(USER_BASE_URI, consumes = ["application/json"])
@@ -31,65 +31,61 @@ class UserController(
     private val appProperties: AppProperties
 ) {
 
-    private val uploadDir = Paths.get(appProperties.uploadsFolder) // Directory to save uploaded files
+  private val uploadDir = Paths.get(appProperties.uploadsFolder) // Directory to save uploaded files
 
-    companion object {
-        const val USER_BASE_URI = "/api/user"
+  companion object {
+    const val USER_BASE_URI = "/api/user"
+  }
+
+  init {
+    if (Files.notExists(uploadDir)) {
+      Files.createDirectories(uploadDir)
+    }
+  }
+
+  @GetMapping("/me")
+  fun getMyProfile(): UserProfile {
+    val user = SecurityContextHolder.getContext().authentication.principal as UserPrincipal
+    return this.userService.getUserProfile(user.id).let {
+      UserProfile(it.id, it.email, it.name, it.imgUrl)
+    }
+  }
+
+  @PostMapping(value = ["/upload"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+  fun uploadSingleFile(@RequestParam("file") file: MultipartFile): ResponseEntity<UploadResponse> {
+    if (file.isEmpty) {
+      return sendBadRequestResponse("Please select a file to upload!", HttpStatus.BAD_REQUEST)
     }
 
-    init {
-        if (Files.notExists(uploadDir)) {
-            Files.createDirectories(uploadDir)
-        }
+    try {
+      val fileName = file.originalFilename ?: "unknown_file"
+      val targetLocation = uploadDir.resolve(fileName)
+      Files.copy(file.inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING)
+
+      val fileUrl = "/uploads/$fileName" + "?" + UUID.randomUUID()
+      // update db
+      val user = SecurityContextHolder.getContext().authentication.principal as UserPrincipal
+      userService.updateImgUrl(user, "http://localhost:8080$fileUrl")
+
+      println("File uploaded successfully: $fileName. Access at: $fileUrl")
+
+      return ResponseEntity.ok(
+          UploadResponse(
+              fileName = fileName,
+              fileUrl = fileUrl,
+              status = HttpStatus.OK.name,
+              detail = "Success"))
+    } catch (e: Exception) {
+      return sendBadRequestResponse(
+          "Failed to upload file: ${e.message}", HttpStatus.INTERNAL_SERVER_ERROR)
     }
+  }
 
-    @GetMapping("/me")
-    fun getMyProfile(): UserProfile {
-        val user = SecurityContextHolder.getContext().authentication.principal as UserPrincipal
-        return this.userService.getUserProfile(user.id).let { UserProfile(it.id, it.email, it.name, it.imgUrl) }
-    }
-
-    @PostMapping(value = ["/upload"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    fun uploadSingleFile(@RequestParam("file") file: MultipartFile): ResponseEntity<UploadResponse> {
-        if (file.isEmpty) {
-            return sendBadRequestResponse("Please select a file to upload!", HttpStatus.BAD_REQUEST)
-        }
-
-        try {
-            val fileName = file.originalFilename ?: "unknown_file"
-            val targetLocation = uploadDir.resolve(fileName)
-            Files.copy(file.inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING)
-
-            val fileUrl = "/uploads/$fileName" + "?" + UUID.randomUUID()
-            // update db
-            val user = SecurityContextHolder.getContext().authentication.principal as UserPrincipal
-            userService.updateImgUrl(user, "http://localhost:8080$fileUrl");
-
-            println("File uploaded successfully: $fileName. Access at: $fileUrl")
-
-            return ResponseEntity.ok(
-                UploadResponse(
-                    fileName = fileName,
-                    fileUrl = fileUrl,
-                    status = HttpStatus.OK.name,
-                    detail = "Success"
-                )
-            )
-
-        } catch (e: Exception) {
-            return sendBadRequestResponse("Failed to upload file: ${e.message}", HttpStatus.INTERNAL_SERVER_ERROR)
-        }
-    }
-
-    private fun sendBadRequestResponse(detail: String, status: HttpStatus): ResponseEntity<UploadResponse> {
-        return ResponseEntity.badRequest().body(
-            UploadResponse(
-                fileName = "",
-                fileUrl = "",
-                status = status.name,
-                detail = detail
-            )
-        )
-    }
-
+  private fun sendBadRequestResponse(
+      detail: String,
+      status: HttpStatus
+  ): ResponseEntity<UploadResponse> {
+    return ResponseEntity.badRequest()
+        .body(UploadResponse(fileName = "", fileUrl = "", status = status.name, detail = detail))
+  }
 }

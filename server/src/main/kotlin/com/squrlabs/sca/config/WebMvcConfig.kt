@@ -10,22 +10,23 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebMvcConfig(private val appProperties: AppProperties) : WebMvcConfigurer {
 
-    override fun addCorsMappings(registry: CorsRegistry) {
-        registry.addMapping("/**")
-            .allowedOrigins("*")
-            .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-            .allowedHeaders("*")
-            .allowCredentials(true)
-            .maxAge(MAX_AGE_SECS)
-    }
+  companion object {
+    const val MAX_AGE_SECS: Long = 3600
+  }
 
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry
-            .addResourceHandler("/uploads/**")
-            .addResourceLocations("file:" + appProperties.uploadsFolder);
-    }
+  override fun addCorsMappings(registry: CorsRegistry) {
+    registry
+        .addMapping("/**")
+        .allowedOrigins("*")
+        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+        .allowedHeaders("*")
+        .allowCredentials(true)
+        .maxAge(MAX_AGE_SECS)
+  }
 
-    companion object {
-        const val MAX_AGE_SECS: Long = 3600
-    }
+  override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+    registry
+        .addResourceHandler("/uploads/**")
+        .addResourceLocations("file:" + appProperties.uploadsFolder)
+  }
 }

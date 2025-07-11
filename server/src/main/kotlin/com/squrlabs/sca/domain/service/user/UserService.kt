@@ -1,12 +1,11 @@
 package com.squrlabs.sca.domain.service.user
 
+import com.squrlabs.sca.config.auth.util.UserPrincipal
 import com.squrlabs.sca.data.entity.user.UserEntity
 import com.squrlabs.sca.data.entity.user.UserEntityMapper
 import com.squrlabs.sca.data.repository.user.UserRepository
-import com.squrlabs.sca.domain.model.user.AuthProvider
 import com.squrlabs.sca.domain.model.user.UserModel
 import com.squrlabs.sca.util.ResourceNotFoundException
-import com.squrlabs.sca.util.auth.util.UserPrincipal
 import com.squrlabs.sca.util.toNullable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.GrantedAuthority
@@ -17,39 +16,35 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 @Service("userService")
-class UserServiceImpl(
-    @Autowired val userRepository: UserRepository
-) : UserService {
+class UserServiceImpl(@Autowired val userRepository: UserRepository) : UserService {
 
-    @Throws(UsernameNotFoundException::class)
-    override fun getUserById(id: String): UserDetails? {
-        userRepository.findById(id).map(UserEntityMapper::to).toNullable()?.let {
-            return UserPrincipal.create(it, emptyMap(), rolesToAuthority(it.roles))
-        }
-        throw ResourceNotFoundException("User", "id", id)
+  @Throws(UsernameNotFoundException::class)
+  override fun getUserById(id: String): UserDetails? {
+    userRepository.findById(id).map(UserEntityMapper::to).toNullable()?.let {
+      return UserPrincipal.create(it, emptyMap(), rolesToAuthority(it.roles))
     }
+    throw ResourceNotFoundException("User", "id", id)
+  }
 
-
-    @Throws(UsernameNotFoundException::class)
-    override fun getUserByEmail(email: String): UserDetails? {
-        userRepository.findByEmail(email).map(UserEntityMapper::to).toNullable()?.let {
-            return UserPrincipal.create(it, emptyMap(), rolesToAuthority(it.roles))
-        }
-        throw ResourceNotFoundException("User", "email", email)
+  @Throws(UsernameNotFoundException::class)
+  override fun getUserByEmail(email: String): UserDetails? {
+    userRepository.findByEmail(email).map(UserEntityMapper::to).toNullable()?.let {
+      return UserPrincipal.create(it, emptyMap(), rolesToAuthority(it.roles))
     }
+    throw ResourceNotFoundException("User", "email", email)
+  }
 
-    override fun getUserProfile(id: String): UserModel {
-        userRepository.findById(id).map(UserEntityMapper::to).toNullable()?.let {
-            return it
-        } ?: run {
-            throw ResourceNotFoundException("User", "id", id)
-        }
-    }
+  override fun getUserProfile(id: String): UserModel {
+    userRepository.findById(id).map(UserEntityMapper::to).toNullable()?.let {
+      return it
+    } ?: run { throw ResourceNotFoundException("User", "id", id) }
+  }
 
-    override fun updateImgUrl(user: UserPrincipal, imgUrl: String): Boolean {
-        val userEntity = userRepository.findById(user.id).get()
+  override fun updateImgUrl(user: UserPrincipal, imgUrl: String): Boolean {
+    val userEntity = userRepository.findById(user.id).get()
 
-        val updatedUser = UserEntity(
+    val updatedUser =
+        UserEntity(
             id = userEntity.id,
             name = userEntity.name,
             email = userEntity.email,
@@ -57,40 +52,41 @@ class UserServiceImpl(
             imgUrl = imgUrl,
             roles = userEntity.roles,
             providerId = userEntity.providerId,
-            provider = userEntity.provider
-        )
-        userRepository.save(updatedUser)
-        return true
-    }
+            provider = userEntity.provider)
+    userRepository.save(updatedUser)
+    return true
+  }
 
-    override fun saveUser(model: UserModel): UserModel {
-        return UserEntityMapper.to(userRepository.save(UserEntityMapper.from(model)))
-    }
+  override fun saveUser(model: UserModel): UserModel {
+    return UserEntityMapper.to(userRepository.save(UserEntityMapper.from(model)))
+  }
 
-    override fun existsByEmail(email: String): Boolean {
-        return userRepository.existsByEmail(email)
-    }
+  override fun existsByEmail(email: String): Boolean {
+    return userRepository.existsByEmail(email)
+  }
 
-    override fun loadUserByUsername(username: String): UserDetails? {
-        return getUserByEmail(username)
-    }
-
+  override fun loadUserByUsername(username: String): UserDetails? {
+    return getUserByEmail(username)
+  }
 }
 
 interface UserService : UserDetailsService {
-    fun getUserById(id: String): UserDetails?
-    fun getUserByEmail(email: String): UserDetails?
-    fun saveUser(model: UserModel): UserModel
-    fun existsByEmail(email: String): Boolean
-    fun getUserProfile(id: String): UserModel
-    fun updateImgUrl(user: UserPrincipal, imgUrl: String): Boolean;
+  fun getUserById(id: String): UserDetails?
+
+  fun getUserByEmail(email: String): UserDetails?
+
+  fun saveUser(model: UserModel): UserModel
+
+  fun existsByEmail(email: String): Boolean
+
+  fun getUserProfile(id: String): UserModel
+
+  fun updateImgUrl(user: UserPrincipal, imgUrl: String): Boolean
 }
 
 fun rolesToAuthority(roles: List<String>): Collection<GrantedAuthority> {
-    val authorises = ArrayList<GrantedAuthority>()
+  val authorises = ArrayList<GrantedAuthority>()
 
-    roles.map {
-        authorises.add(SimpleGrantedAuthority(it))
-    }
-    return authorises
+  roles.map { authorises.add(SimpleGrantedAuthority(it)) }
+  return authorises
 }

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse
 
 
 object CookieUtils {
+
     fun getCookie(request: HttpServletRequest, name: String?): Cookie? {
         val cookies = request.cookies
         cookies?.map {
@@ -28,7 +29,7 @@ object CookieUtils {
     fun deleteCookie(request: HttpServletRequest, response: HttpServletResponse, name: String?) {
         val cookies = request.cookies
         cookies?.map {
-            if (it.name == name){
+            if (it.name == name) {
                 it.value = ""
                 it.path = "/"
                 it.maxAge = 0
@@ -39,11 +40,14 @@ object CookieUtils {
 
     fun serialize(`object`: Any?): String {
         return Base64.getUrlEncoder()
-                .encodeToString(SerializationUtils.serialize(`object`))
+            .encodeToString(SerializationUtils.serialize(`object`))
     }
 
     fun <T> deserialize(cookie: Cookie, cls: Class<T>): T {
-        return cls.cast(SerializationUtils.deserialize(
-                Base64.getUrlDecoder().decode(cookie.value)))
+        return cls.cast(
+            SerializationUtils.deserialize(
+                Base64.getUrlDecoder().decode(cookie.value)
+            )
+        )
     }
 }

@@ -1,4 +1,4 @@
-package com.squrlabs.sca.util.auth.misc
+package com.squrlabs.sca.config.auth.tokenandcookie
 
 import com.squrlabs.sca.util.CookieUtils
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository
@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
 @Component
-class OAuth2RequestRepository: AuthorizationRequestRepository<OAuth2AuthorizationRequest>{
+class OAuth2RequestRepository : AuthorizationRequestRepository<OAuth2AuthorizationRequest> {
 
     override fun loadAuthorizationRequest(request: HttpServletRequest): OAuth2AuthorizationRequest? {
         CookieUtils.getCookie(request, OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME)?.let {
@@ -30,7 +30,7 @@ class OAuth2RequestRepository: AuthorizationRequestRepository<OAuth2Authorizatio
                     CookieUtils.addCookie(response, REDIRECT_URL_PARAM_COOKIE_NAME, uri, cookieExpireSeconds)
             }
 
-        }?: run{
+        } ?: run {
             removeAuthorizationRequestCookies(request, response)
         }
     }

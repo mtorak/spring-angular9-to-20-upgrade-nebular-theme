@@ -1,5 +1,8 @@
-package com.squrlabs.sca.domain.service.auth
+package com.squrlabs.sca.config.auth.service
 
+import com.squrlabs.sca.config.auth.util.OAuth2UserInfo
+import com.squrlabs.sca.config.auth.util.OAuth2UserInfoFactory
+import com.squrlabs.sca.config.auth.util.UserPrincipal
 import com.squrlabs.sca.data.entity.user.UserEntity
 import com.squrlabs.sca.data.entity.user.UserEntityMapper
 import com.squrlabs.sca.data.repository.user.UserRepository
@@ -7,9 +10,6 @@ import com.squrlabs.sca.domain.model.user.AuthProvider
 import com.squrlabs.sca.domain.model.user.UserModel
 import com.squrlabs.sca.domain.service.user.rolesToAuthority
 import com.squrlabs.sca.util.OAuth2AuthenticationProcessingException
-import com.squrlabs.sca.util.auth.util.OAuth2UserInfo
-import com.squrlabs.sca.util.auth.util.OAuth2UserInfoFactory.getOAuth2UserInfo
-import com.squrlabs.sca.util.auth.util.UserPrincipal
 import com.squrlabs.sca.util.toNullable
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.InternalAuthenticationServiceException
@@ -36,7 +36,7 @@ class CustomOAuth2UserService(@Autowired private val userRepository: UserReposit
     }
 
     private fun processOAuth2User(oAuth2UserRequest: OAuth2UserRequest, oAuth2User: OAuth2User): OAuth2User {
-        val oAuth2UserInfo = getOAuth2UserInfo(oAuth2UserRequest.clientRegistration.registrationId, oAuth2User.attributes)
+        val oAuth2UserInfo = OAuth2UserInfoFactory.getOAuth2UserInfo(oAuth2UserRequest.clientRegistration.registrationId, oAuth2User.attributes)
         if (oAuth2UserInfo.getEmail().isEmpty()) {
             throw OAuth2AuthenticationProcessingException("Email not found from OAuth2 provider")
         }
@@ -55,7 +55,7 @@ class CustomOAuth2UserService(@Autowired private val userRepository: UserReposit
         } ?: run {
             user = registerNewUser(oAuth2UserRequest, oAuth2UserInfo)
         }
-        return UserPrincipal.create(user!!, oAuth2User.attributes, rolesToAuthority(user!!.roles))
+        return UserPrincipal.Companion.create(user!!, oAuth2User.attributes, rolesToAuthority(user!!.roles))
     }
 
     private fun registerNewUser(oAuth2UserRequest: OAuth2UserRequest, oAuth2UserInfo: OAuth2UserInfo): UserModel {
