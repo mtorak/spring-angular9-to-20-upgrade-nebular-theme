@@ -141,6 +141,26 @@ As a result, updated from 16 to 17 to 18.
 `npx ng update @angular/core@19 @angular/cli@19`
 `npx ng update @nebular/eva-icons@15.0.0 @nebular/theme@15.0.0`<br>
 
+**After nebular 15 update, below errors appeared:**<br>
+
+<i>Sass @import rules are deprecated and will be removed in Dart Sass 3.0.0.\
+  
+  More info and automated migrator: https://sass-lang.com/d/import
+
+[WARNING] Deprecation [plugin angular-sass]
+
+    src/themes.scss:2:8:
+      2 │ @import '@nebular/theme/styles/themes/default';
+</i>
+
+Resolved changing **@import** <br>
+`@import '@nebular/theme/styles/theming';`<br>
+
+with **@use**<br>
+`@use '@nebular/theme/styles/theming';`
+
+Ve sonrasında nebular dökümanlarında anlatılanlar uygulandı:<br>
+https://akveo.github.io/nebular/docs/design-system/enable-customizable-theme#enable-customizable-themes
 
 
 ## Technologies/Design Decisions
