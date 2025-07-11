@@ -38,6 +38,7 @@ export class JwtInterceptor implements HttpInterceptor {
                         if (err.status !== 401) {
                             return;
                         }
+                        // token expired, should re-login
                         this.userService.logout();
                     }
                 }
