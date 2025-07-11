@@ -166,6 +166,13 @@ https://akveo.github.io/nebular/docs/design-system/enable-customizable-theme#ena
 Couldn't update to Angular 20, because latest nebular theme(v15.0.0) supports till Angular 19:<br>
 https://github.com/akveo/nebular/releases
 
+### Update bootstrap
+`npx ng update bootstrap@5`<br>
+After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` and `me-*`
+
+### Final update of remaning dependencies 
+`npx ng update rxjs sockjs-client tslib @stomp/stompjs zone.js @schematics/angular @types/jasmine @types/jasminewd2 @types/node @types/sockjs-client jasmine-core jasmine-spec-reporter karma karma-chrome-launcher karma-coverage-istanbul-reporter karma-jasmine karma-jasmine-html-reporter protractor `
+
 
 ## Technologies/Design Decisions
 

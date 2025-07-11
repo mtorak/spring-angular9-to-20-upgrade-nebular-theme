@@ -23,18 +23,18 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
-        securedEnabled = true,
-        jsr250Enabled = true,
-        prePostEnabled = true
+    securedEnabled = true,
+    jsr250Enabled = true,
+    prePostEnabled = true
 )
 class SecurityConfigure(
-        @Autowired val userService: UserService,
-        @Autowired val tokenAuthenticationFilter: TokenAuthenticationFilter,
-        @Autowired val customOAuth2UserService: CustomOAuth2UserService,
-        @Autowired val oAuth2SuccessHandler: OAuth2SuccessHandler,
-        @Autowired val oAuth2RequestRepository: OAuth2RequestRepository,
-        @Autowired val oAuth2FailureHandler: OAuth2FailureHandler
-): WebSecurityConfigurerAdapter() {
+    @Autowired val userService: UserService,
+    @Autowired val tokenAuthenticationFilter: TokenAuthenticationFilter,
+    @Autowired val customOAuth2UserService: CustomOAuth2UserService,
+    @Autowired val oAuth2SuccessHandler: OAuth2SuccessHandler,
+    @Autowired val oAuth2RequestRepository: OAuth2RequestRepository,
+    @Autowired val oAuth2FailureHandler: OAuth2FailureHandler
+) : WebSecurityConfigurerAdapter() {
 
     @Bean
     fun passwordEncoder(): PasswordEncoder? {
@@ -50,36 +50,37 @@ class SecurityConfigure(
     @Throws(java.lang.Exception::class)
     override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
         authenticationManagerBuilder
-                .userDetailsService<UserDetailsService>(userService)
-                .passwordEncoder(passwordEncoder())
+            .userDetailsService<UserDetailsService>(userService)
+            .passwordEncoder(passwordEncoder())
     }
 
 
     override fun configure(http: HttpSecurity) {
         http.cors()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().csrf().disable()
-                .formLogin().disable()
-                .httpBasic().disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(RestAuthenticationEntryPoint())
-                .and().authorizeRequests()
-                .antMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .antMatchers("/api/account/**", "/api/docs", "/login/oauth2/code/**", "/ws/**").permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .oauth2Login { oauth2Login ->
-                    oauth2Login.authorizationEndpoint {
-                        it.authorizationRequestRepository(oAuth2RequestRepository)
-                    }
-                    oauth2Login.userInfoEndpoint {
-                            it.userService(customOAuth2UserService)
-                    }
-                    oauth2Login.successHandler(oAuth2SuccessHandler).failureHandler(oAuth2FailureHandler)
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and().csrf().disable()
+            .formLogin().disable()
+            .httpBasic().disable()
+            .exceptionHandling()
+            .authenticationEntryPoint(RestAuthenticationEntryPoint())
+            .and().authorizeRequests()
+            .antMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.jpeg", "/**/*.html", "/**/*.css", "/**/*.js")
+            .permitAll()
+            .antMatchers("/api/account/**", "/api/docs", "/login/oauth2/code/**", "/ws/**").permitAll()
+            .anyRequest()
+            .authenticated()
+            .and()
+            .oauth2Login { oauth2Login ->
+                oauth2Login.authorizationEndpoint {
+                    it.authorizationRequestRepository(oAuth2RequestRepository)
                 }
+                oauth2Login.userInfoEndpoint {
+                    it.userService(customOAuth2UserService)
+                }
+                oauth2Login.successHandler(oAuth2SuccessHandler).failureHandler(oAuth2FailureHandler)
+            }
 
         http.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
     }
