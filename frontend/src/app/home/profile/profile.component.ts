@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { UserService } from 'src/app/_services/user.service';
 import { UserProfile } from 'src/app/_dtos/user/UserProfile';
 
@@ -10,6 +9,7 @@ import { throwError } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-profile',

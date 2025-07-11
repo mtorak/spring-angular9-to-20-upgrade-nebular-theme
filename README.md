@@ -162,6 +162,9 @@ with **@use**<br>
 After this, below directions have been applied:<br>
 https://akveo.github.io/nebular/docs/design-system/enable-customizable-theme#enable-customizable-themes
 
+### Update 19 to 20
+Couldn't update to Angular 20, because latest nebular theme(v15.0.0) supports till Angular 19:<br>
+https://github.com/akveo/nebular/releases
 
 
 ## Technologies/Design Decisions
