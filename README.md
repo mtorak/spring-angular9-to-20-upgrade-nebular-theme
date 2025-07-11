@@ -105,7 +105,7 @@ After `npm i` got some ng2-file-upload - angular dependency errors, so updated n
 `npx ng update @nebular/eva-icons@12.0.0 @nebular/theme@12.0.0`<br>
 `npx ng update ng2-file-upload@5.0.0`<br>
 
-### Update 16 to 17
+### Update 16 to 17 to 18
 `nvm use 17`<br>
 `npx ng update @angular/core@17 @angular/cli@17`
 `npx ng update @nebular/eva-icons@13.0.0 @nebular/theme@13.0.0`<br>
@@ -126,6 +126,15 @@ Above command also updated Angular from 17 to 18 :/
 After these updates, ng2-file-upload dependency errors appeared:<br>
 `npx ng update ng2-file-upload@7.0.0<br>`
 
+After all above updates, SockJs import needed to be changed like this:<br>
+
+From this:<br>
+`import * as SockJS from 'sockjs-client';`
+
+To this:<br>
+`import SockJS from 'sockjs-client';`
+
+As a result, updated from 16 to 17 to 18.
 
 ## Technologies/Design Decisions
 
