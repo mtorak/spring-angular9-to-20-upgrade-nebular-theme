@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DataService } from './data.service';
-import * as SockJS from 'sockjs-client';
+import SockJS from 'sockjs-client';
 import { Stomp } from '@stomp/stompjs';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user.service';
@@ -24,6 +24,7 @@ export class NotificationService {
   }
 
   suscribe() {
+
     let ws = new SockJS(`${environment.DOMAIN}/ws`);
     this.stompClient = Stomp.over(ws);
     this.stompClient.debug = () => { };
