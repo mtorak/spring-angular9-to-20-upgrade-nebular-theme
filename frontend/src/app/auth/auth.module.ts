@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AuthRoutingModule } from './auth-routing.module';
@@ -17,24 +17,19 @@ import { TokenComponent } from './token/token.component';
 import { UserService } from '../_services/user.service';
 
 
-@NgModule({
-  declarations: [
-    AuthComponent,
-    SignupComponent,
-    SigninComponent,
-    ForgotPasswordComponent,
-    ResetPasswordComponent,
-    TokenComponent],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    SharedModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule
-  ],
-  providers: [
-    AuthService, UserService
-  ]
-})
+@NgModule({ declarations: [
+        AuthComponent,
+        SignupComponent,
+        SigninComponent,
+        ForgotPasswordComponent,
+        ResetPasswordComponent,
+        TokenComponent
+    ], imports: [CommonModule,
+        AuthRoutingModule,
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule], providers: [
+        AuthService, UserService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AuthModule { }
