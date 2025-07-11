@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
     selector: 'app-forgot-password',

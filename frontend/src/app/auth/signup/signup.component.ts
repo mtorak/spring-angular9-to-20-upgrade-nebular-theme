@@ -6,19 +6,26 @@ import { SignUpRequest } from 'src/app/_dtos/auth/SignUpRequest';
 import { ApiResponse } from 'src/app/_dtos/common/ApiResponse';
 import { NbDialogService } from '@nebular/theme';
 import { DialogSuccessComponent } from 'src/app/shared/dialog/dialog-alert/dialog-success.component';
+import { NbToastrService } from '@nebular/theme';
 
 @Component({
-    selector: 'app-signup',
-    templateUrl: './signup.component.html',
-    styleUrls: ['./signup.component.scss'],
-    standalone: false
+  selector: 'app-signup',
+  templateUrl: './signup.component.html',
+  styleUrls: ['./signup.component.scss'],
+  standalone: false
 })
 export class SignupComponent implements OnInit {
 
   loading: Boolean = false
   signUpFrom: UntypedFormGroup
 
-  constructor(private _authService: AuthService, private fb: UntypedFormBuilder, private router: Router, private dialogService: NbDialogService) {
+  constructor(
+    private _authService: AuthService,
+    private fb: UntypedFormBuilder,
+    private router: Router,
+    private dialogService: NbDialogService,
+    private toastrService: NbToastrService) {
+
     this.signUpFrom = this.fb.group({
       email: [],
       password: [],
@@ -27,7 +34,6 @@ export class SignupComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   register() {
@@ -42,7 +48,9 @@ export class SignupComponent implements OnInit {
           })
         }, (err: any) => {
           this.loading = false
-          console.log(err.error.message)
+          console.log(err.error.message);
+          this.toastrService.show((err.error.message as string).substring(0, 100), 'Signup Failed',
+            { status: 'danger', duration: 4000 });
         }
       )
     }

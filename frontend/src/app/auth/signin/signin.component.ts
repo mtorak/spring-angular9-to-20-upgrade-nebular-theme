@@ -8,10 +8,10 @@ import { environment } from '../../../environments/environment';
 import { NbToastrService } from '@nebular/theme';
 
 @Component({
-    selector: 'app-signin',
-    templateUrl: './signin.component.html',
-    styleUrls: ['./signin.component.scss'],
-    standalone: false
+  selector: 'app-signin',
+  templateUrl: './signin.component.html',
+  styleUrls: ['./signin.component.scss'],
+  standalone: false
 })
 export class SigninComponent implements OnInit {
 
@@ -24,6 +24,7 @@ export class SigninComponent implements OnInit {
     private fb: UntypedFormBuilder,
     private router: Router,
     private toastrService: NbToastrService) {
+
     this.signInFrom = this.fb.group({
       email: [],
       password: []
@@ -37,17 +38,18 @@ export class SigninComponent implements OnInit {
     if (this.signInFrom.valid) {
       let data = this.signInFrom.value
       this.loading = true
-      this._authService.login(new SignInRequest(data['email'], data['password'])).subscribe(
-        (response: SignInResponse) => {
-          this.router.navigateByUrl(this.redirect)
-          this.loading = false
-        }, (err: any) => {
-          this.loading = false
-          console.log(err.error.message)
-          this.toastrService.show('User not found!', 'Invalid E-Mail',
-            { status: 'danger', duration: 4000 });
-        }
-      )
+      this._authService.login(new SignInRequest(data['email'], data['password']))
+        .subscribe(
+          (response: SignInResponse) => {
+            this.router.navigateByUrl(this.redirect)
+            this.loading = false
+          }, (err: any) => {
+            this.loading = false
+            console.log(err.error.message)
+            this.toastrService.show('User not found!', 'Invalid E-Mail',
+              { status: 'danger', duration: 4000 });
+          }
+        )
     }
   }
 
