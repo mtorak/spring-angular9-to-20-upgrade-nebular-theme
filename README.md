@@ -139,6 +139,7 @@ As a result, updated from 16 to 17 to 18.
 ### Update 18 to 19
 `nvm use 20`<br>
 `npx ng update @angular/core@19 @angular/cli@19`
+`npx ng update @nebular/eva-icons@15.0.0 @nebular/theme@15.0.0`<br>
 
 
 
