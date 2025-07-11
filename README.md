@@ -110,6 +110,14 @@ After `npm i` got some ng2-file-upload - angular dependency errors, so updated n
 `npx ng update @angular/core@17 @angular/cli@17`
 `npx ng update @nebular/eva-icons@13.0.0 @nebular/theme@13.0.0`<br>
 `npx ng update ng2-file-upload@6.0.0<br>`
+`npx ng update @schematics/angular@17`<br>
+
+After nebular 13 updated below error appeared:<br>
+
+*node_modules/@nebular/theme/components/cdk/table/row.d.ts:39:5 - error TS2610: 'sticky' is defined as an accessor in class 'CdkFooterRowDef', but is overridden here in 'NbFooterRowDefDirective' as an instance property.*
+
+So updated to nebular 14:<br>
+`npx ng update @nebular/eva-icons@14.0.0 @nebular/theme@14.0.0`<br>
 
 
 ## Technologies/Design Decisions
