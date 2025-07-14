@@ -207,7 +207,7 @@ After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` 
 
 #### Prod build
 `npm install serve@11.3.0` // http server<br>
-`npx ng build --prod`
+`npx ng build --prod`<br>
 `cd dist/frontend`<br>
 `npx serve -s -p 4200`
 
