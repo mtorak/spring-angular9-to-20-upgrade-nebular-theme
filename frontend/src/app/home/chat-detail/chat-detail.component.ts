@@ -7,10 +7,10 @@ import { UserService } from 'src/app/_services/user.service';
 import { NbMessage } from 'src/app/_dtos/chat/NbMessage';
 
 @Component({
-    selector: 'app-chat-detail',
-    templateUrl: './chat-detail.component.html',
-    styleUrls: ['./chat-detail.component.scss'],
-    standalone: false
+  selector: 'app-chat-detail',
+  templateUrl: './chat-detail.component.html',
+  styleUrls: ['./chat-detail.component.scss'],
+  standalone: false
 })
 export class ChatDetailComponent implements OnInit {
 
@@ -60,7 +60,10 @@ export class ChatDetailComponent implements OnInit {
     if (files.length == 0) {
       this.chatService.createMessageText(this.friendId, event.message).subscribe()
     } else {
-      formData.append('files', files);
+      // formData.append('files', files);
+      files.map((file) => {
+        formData.append('files', file);
+      })
       this.chatService.createMessageFile(this.friendId, event.message, formData).subscribe()
     }
   }

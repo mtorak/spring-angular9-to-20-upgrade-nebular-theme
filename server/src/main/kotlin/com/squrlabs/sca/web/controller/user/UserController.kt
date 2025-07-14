@@ -1,16 +1,12 @@
 package com.squrlabs.sca.web.controller.user
 
-import com.squrlabs.sca.config.AppProperties
 import com.squrlabs.sca.config.auth.util.UserPrincipal
 import com.squrlabs.sca.domain.model.user.UploadResponse
+import com.squrlabs.sca.domain.service.file.FileStorageService
 import com.squrlabs.sca.domain.service.user.UserService
 import com.squrlabs.sca.web.controller.user.UserController.Companion.USER_BASE_URI
 import com.squrlabs.sca.web.dto.user.UserProfile
 import io.swagger.v3.oas.annotations.tags.Tag
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardCopyOption
-import java.util.UUID
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
@@ -28,19 +24,11 @@ import org.springframework.web.multipart.MultipartFile
 @Tag(name = "User Api", description = " This contains url related to login account")
 class UserController(
     @Autowired val userService: UserService,
-    private val appProperties: AppProperties
+    @Autowired val fileStorageService: FileStorageService
 ) {
-
-  private val uploadDir = Paths.get(appProperties.uploadsFolder) // Directory to save uploaded files
 
   companion object {
     const val USER_BASE_URI = "/api/user"
-  }
-
-  init {
-    if (Files.notExists(uploadDir)) {
-      Files.createDirectories(uploadDir)
-    }
   }
 
   @GetMapping("/me")
@@ -59,15 +47,11 @@ class UserController(
 
     try {
       val fileName = file.originalFilename ?: "unknown_file"
-      val targetLocation = uploadDir.resolve(fileName)
-      Files.copy(file.inputStream, targetLocation, StandardCopyOption.REPLACE_EXISTING)
+      val fileUrl = fileStorageService.store(file)
 
-      val fileUrl = "/uploads/$fileName" + "?" + UUID.randomUUID()
       // update db
       val user = SecurityContextHolder.getContext().authentication.principal as UserPrincipal
-      userService.updateImgUrl(user, "http://localhost:8080$fileUrl")
-
-      println("File uploaded successfully: $fileName. Access at: $fileUrl")
+      userService.updateImgUrl(user, fileUrl)
 
       return ResponseEntity.ok(
           UploadResponse(

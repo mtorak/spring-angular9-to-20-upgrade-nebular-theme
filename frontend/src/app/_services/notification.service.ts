@@ -29,6 +29,7 @@ export class NotificationService {
     this.stompClient = Stomp.over(ws);
     this.stompClient.debug = () => { };
     const _this = this;
+
     _this.stompClient.connect({ "Authorization": "Bearer " + this.storageService.getToken() },
       function (frame) {
         _this.stompClient.subscribe(_this.topic, function (sdkEvent) {
@@ -38,6 +39,16 @@ export class NotificationService {
       function (error) {
         setTimeout(() => _this.suscribe(), 5000);
       });
+
+    // on connect handler
+    _this.stompClient.onConnect = function (frame) {
+      console.log('Broker reported error: ' + frame.headers['message']);
+      console.log('Additional details: ' + frame.body);
+    };
+
+    // further info: how to publish messages 
+    // https://stomp-js.github.io/guide/stompjs/using-stompjs-v5.html
+
   }
 
   onMessageReceived(message) {

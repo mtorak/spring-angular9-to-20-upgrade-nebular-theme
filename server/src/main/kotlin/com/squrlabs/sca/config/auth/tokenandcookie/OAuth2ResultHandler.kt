@@ -102,5 +102,4 @@ class OAuth2FailureHandler(@Autowired val oAuth2RequestRepository: OAuth2Request
     oAuth2RequestRepository.removeAuthorizationRequestCookies(request, response)
     redirectStrategy.sendRedirect(request, response, targetUrl)
   }
-
 }

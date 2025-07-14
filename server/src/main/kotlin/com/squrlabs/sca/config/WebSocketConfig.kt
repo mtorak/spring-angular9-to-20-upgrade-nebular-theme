@@ -18,13 +18,13 @@ class WebSocketConfig(
     @Autowired val userService: UserService
 ) : WebSocketMessageBrokerConfigurer {
 
+  override fun registerStompEndpoints(registry: StompEndpointRegistry) {
+    registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS()
+  }
+
   override fun configureMessageBroker(config: MessageBrokerRegistry) {
     config.enableSimpleBroker("/notifications")
     config.setApplicationDestinationPrefixes("/app")
-  }
-
-  override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-    registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS()
   }
 
   override fun configureClientInboundChannel(registration: ChannelRegistration) {

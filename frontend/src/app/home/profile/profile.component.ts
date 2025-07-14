@@ -12,10 +12,10 @@ import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-profile',
-    templateUrl: './profile.component.html',
-    styleUrls: ['./profile.component.scss'],
-    standalone: false
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.scss'],
+  standalone: false
 })
 export class ProfileComponent implements OnInit {
 
@@ -47,7 +47,7 @@ export class ProfileComponent implements OnInit {
       throwError("A valid JWT token is needed to upload a file!");
 
     const uploaderOptions: FileUploaderOptions = {
-      url: 'http://localhost:8080/api/user/upload',
+      url: `${environment.DOMAIN}/api/user/upload`,
       autoUpload: true,
       isHTML5: true,
       // Calculate progress independently for each uploaded file
@@ -81,7 +81,7 @@ export class ProfileComponent implements OnInit {
       }
 
       if (status == 200 || status == 201) {
-        const newImgUrl = environment.DOMAIN + JSON.parse(response).fileUrl;
+        const newImgUrl = JSON.parse(response).fileUrl;
         this.profile.imgUrl = newImgUrl;
         this.tokenStorageService.updateImageUrl(newImgUrl);
       }
