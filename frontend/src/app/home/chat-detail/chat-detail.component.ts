@@ -60,10 +60,9 @@ export class ChatDetailComponent implements OnInit {
     if (files.length == 0) {
       this.chatService.createMessageText(this.friendId, event.message).subscribe()
     } else {
-      // formData.append('files', files);
       files.map((file) => {
         formData.append('files', file);
-      })
+      });
       this.chatService.createMessageFile(this.friendId, event.message, formData).subscribe()
     }
   }

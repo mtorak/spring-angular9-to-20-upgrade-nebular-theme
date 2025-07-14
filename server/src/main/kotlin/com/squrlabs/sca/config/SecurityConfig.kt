@@ -26,7 +26,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true, prePostEnabled = true)
-class SecurityConfigure(
+class SecurityConfig(
     @Autowired val userService: UserService,
     @Autowired val tokenAuthenticationFilter: TokenAuthenticationFilter,
     @Autowired val customOAuth2UserService: CustomOAuth2UserService,
