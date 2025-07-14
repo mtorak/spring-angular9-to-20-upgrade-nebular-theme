@@ -177,9 +177,9 @@ After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` 
 ## Technologies/Design Decisions
 
 - Backend: Spring Boot 2.2 with Kotlin 
-- Frontend: Angular 9
+- Frontend: Angular 19
 - Database: MongoDB
-- ORM: Spring Data
+- ORM: Spring Data Mongo
 - WebSocket messaging protocol: Stomp
 - WebSocket handler: Sock.js (with cross-browser fallbacks)
 - Security: Spring Security
@@ -191,16 +191,16 @@ After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` 
 
 #### Build and run client side(dev mode)
 
-- Angular 9
-- Nebular Theme 5 (https://akveo.github.io/nebular/)
-- Bootstrap 4
+- Angular 19
+- Nebular Theme 15 (https://akveo.github.io/nebular/)
+- Bootstrap 5.3
 - Serve 11 // http server
 - ng2-file-upload
 - sockjs-client & stompjs
 - eva icons
 
 `cd frontend`<br>
-`nvm use 10`<br>
+`nvm use 22`<br>
 `npm i`<br>
 `npx ng serve`<br>
 
