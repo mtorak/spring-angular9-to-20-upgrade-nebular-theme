@@ -5,9 +5,9 @@ import com.squrlabs.sca.util.BadRequestException
 import com.squrlabs.sca.util.CookieUtils.getCookie
 import java.io.IOException
 import java.net.URI
-import javax.servlet.ServletException
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import jakarta.servlet.ServletException
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
@@ -73,7 +73,7 @@ class OAuth2SuccessHandler(
     val clientRedirectUri = URI.create(uri)
     appProperties.oauth2.authorizedRedirectUrls.map {
       val authorizedURL = URI.create(it)
-      if (authorizedURL.host.toUpperCase() == clientRedirectUri.host.toUpperCase()) {
+      if (authorizedURL.host.uppercase() == clientRedirectUri.host.uppercase()) {
         return true
       }
     }

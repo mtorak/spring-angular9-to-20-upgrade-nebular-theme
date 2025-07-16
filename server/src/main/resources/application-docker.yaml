@@ -32,8 +32,8 @@ logging:
   level:
     org:
       springframework:
-        data: debug
         web: trace
+        security: debug
     error: trace
 
 #docs
@@ -44,7 +44,7 @@ springdoc:
 
 app:
   auth:
-    tokenSecret: OAUTH_EMAIL_SECRET
+    tokenSecret: OAUTH_EMAIL_SECRET_OAUTH_EMAIL_SECRET
     tokenExpirationMsec: 300000
   oauth2:
     authorizedRedirectUrls:

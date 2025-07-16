@@ -3,7 +3,9 @@ package com.squrlabs.sca.config.auth.tokenandcookie
 import com.squrlabs.sca.config.AppProperties
 import com.squrlabs.sca.config.auth.util.UserPrincipal
 import io.jsonwebtoken.*
+import io.jsonwebtoken.security.Keys
 import java.util.*
+import javax.crypto.SecretKey
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 
@@ -18,28 +20,32 @@ class TokenProvider(private val appProperties: AppProperties) {
   fun generateToken(userPrincipal: UserPrincipal): String {
     val now = Date()
     val expiryDate = Date(now.time + appProperties.auth.tokenExpirationMsec)
+
     return Jwts.builder()
-        .setSubject(userPrincipal.id)
-        .setIssuedAt(Date())
-        .setExpiration(expiryDate)
-        .signWith(SignatureAlgorithm.HS512, appProperties.auth.tokenSecret)
+        .subject(userPrincipal.id)
+        .issuedAt(Date())
+        .expiration(expiryDate)
+        .signWith(getSigningKey())
         .compact()
   }
 
   fun getUserIdFromToken(token: String?): String {
-    return Jwts.parser()
-        .setSigningKey(appProperties.auth.tokenSecret)
-        .parseClaimsJws(token)
-        .body
-        .subject
+    val claims: Claims =
+        Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(token).getPayload()
+    return claims.subject
   }
 
   fun validateToken(authToken: String?): Boolean {
     return try {
-      Jwts.parser().setSigningKey(appProperties.auth.tokenSecret).parseClaimsJws(authToken)
+      Jwts.parser().verifyWith(getSigningKey()).build().parseSignedClaims(authToken)
       true
     } catch (ex: Exception) {
       false
     }
+  }
+
+  private fun getSigningKey(): SecretKey {
+    val keyBytes = appProperties.auth.tokenSecret?.toByteArray()
+    return Keys.hmacShaKeyFor(keyBytes)
   }
 }

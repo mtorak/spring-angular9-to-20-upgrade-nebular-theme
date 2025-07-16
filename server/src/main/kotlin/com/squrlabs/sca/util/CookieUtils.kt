@@ -1,16 +1,16 @@
 package com.squrlabs.sca.util
 
+import jakarta.servlet.http.Cookie
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.util.SerializationUtils
 import java.util.*
-import javax.servlet.http.Cookie
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
 
 
 object CookieUtils {
 
-    fun getCookie(request: HttpServletRequest, name: String?): Cookie? {
-        val cookies = request.cookies
+    fun getCookie(request: HttpServletRequest?, name: String?): Cookie? {
+        val cookies = request?.cookies
         cookies?.map {
             if (it.name == name)
                 return it
