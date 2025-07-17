@@ -223,6 +223,9 @@ After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` 
 - Easy add new friends via email. Like WhatsApp add via Phone number.
 - Chat support Images, Audio, Video, Gif's, Map Location. Multiple files with drop in feature.
 
+## Auth Flow
+![Auth Flow](./images/auth-flow-nebular-chat.drawio.svg)
+
 ## Themes
 
 ### Default Theme
@@ -238,7 +241,6 @@ After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` 
 ![Light Theme](./images/theme-3.png)
 
 ## Screenshots
-
 - [Signin Screen](./images/signin.png)
 - [Signup Screen](./images/signin.png)
 - [Oauth2 Confirmation](./images/token.png)
