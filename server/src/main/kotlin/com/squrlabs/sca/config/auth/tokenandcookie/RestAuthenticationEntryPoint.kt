@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component
 @Component
 class RestAuthenticationEntryPoint : AuthenticationEntryPoint {
 
-  override fun commence(
-      request: HttpServletRequest?,
-      response: HttpServletResponse?,
-      authException: AuthenticationException?
-  ) {
-    response!!.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException!!.localizedMessage)
-  }
+    override fun commence(
+        request: HttpServletRequest?,
+        response: HttpServletResponse?,
+        authException: AuthenticationException?,
+    ) {
+        response!!.sendError(HttpServletResponse.SC_UNAUTHORIZED, authException!!.localizedMessage)
+    }
 }

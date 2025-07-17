@@ -3,11 +3,11 @@ package com.squrlabs.sca.config.auth.tokenandcookie
 import com.squrlabs.sca.config.AppProperties
 import com.squrlabs.sca.util.BadRequestException
 import com.squrlabs.sca.util.CookieUtils.getCookie
-import java.io.IOException
-import java.net.URI
 import jakarta.servlet.ServletException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import java.io.IOException
+import java.net.URI
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.AuthenticationException
@@ -20,86 +20,87 @@ import org.springframework.web.util.UriComponentsBuilder
 class OAuth2SuccessHandler(
     @Autowired val tokenProvider: TokenProvider,
     @Autowired private val appProperties: AppProperties,
-    @Autowired val oAuth2RequestRepository: OAuth2RequestRepository
+    @Autowired val oAuth2RequestRepository: OAuth2RequestRepository,
 ) : SimpleUrlAuthenticationSuccessHandler() {
 
-  override fun onAuthenticationSuccess(
-      request: HttpServletRequest,
-      response: HttpServletResponse,
-      authentication: Authentication
-  ) {
-    val targetUrl = determineTargetUrl(request, response, authentication)
+    override fun onAuthenticationSuccess(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        authentication: Authentication,
+    ) {
+        val targetUrl = determineTargetUrl(request, response, authentication)
 
-    if (response.isCommitted) {
-      return
-    }
-    clearAuthenticationAttributes(request, response)
-    redirectStrategy.sendRedirect(request, response, targetUrl)
-  }
-
-  override fun determineTargetUrl(
-      request: HttpServletRequest?,
-      response: HttpServletResponse?,
-      authentication: Authentication
-  ): String {
-
-    val redirectUrl: String =
-        getCookie(request!!, OAuth2RequestRepository.Companion.REDIRECT_URL_PARAM_COOKIE_NAME)
-            ?.let {
-              return@let it.value
-            } ?: ""
-
-    if (redirectUrl.isEmpty() && !isAuthorizedRedirectUrl(redirectUrl)) {
-      throw BadRequestException(
-          "Sorry! We've got an Unauthorized Redirect URL and can't proceed with the authentication")
+        if (response.isCommitted) {
+            return
+        }
+        clearAuthenticationAttributes(request, response)
+        redirectStrategy.sendRedirect(request, response, targetUrl)
     }
 
-    return UriComponentsBuilder.fromUriString(redirectUrl)
-        .queryParam("token", tokenProvider.createToken(authentication))
-        .build()
-        .toUriString()
-  }
+    override fun determineTargetUrl(
+        request: HttpServletRequest?,
+        response: HttpServletResponse?,
+        authentication: Authentication,
+    ): String {
 
-  private fun clearAuthenticationAttributes(
-      request: HttpServletRequest,
-      response: HttpServletResponse
-  ) {
-    super.clearAuthenticationAttributes(request)
-    oAuth2RequestRepository.removeAuthorizationRequestCookies(request, response)
-  }
+        val redirectUrl: String =
+            getCookie(request!!, OAuth2RequestRepository.Companion.REDIRECT_URL_PARAM_COOKIE_NAME)
+                ?.let {
+                    return@let it.value
+                } ?: ""
 
-  private fun isAuthorizedRedirectUrl(uri: String): Boolean {
+        if (redirectUrl.isEmpty() && !isAuthorizedRedirectUrl(redirectUrl)) {
+            throw BadRequestException(
+                "Sorry! We've got an Unauthorized Redirect URL and can't proceed with the authentication"
+            )
+        }
 
-    val clientRedirectUri = URI.create(uri)
-    appProperties.oauth2.authorizedRedirectUrls.map {
-      val authorizedURL = URI.create(it)
-      if (authorizedURL.host.uppercase() == clientRedirectUri.host.uppercase()) {
-        return true
-      }
+        return UriComponentsBuilder.fromUriString(redirectUrl)
+            .queryParam("token", tokenProvider.createToken(authentication))
+            .build()
+            .toUriString()
     }
-    return false
-  }
+
+    private fun clearAuthenticationAttributes(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+    ) {
+        super.clearAuthenticationAttributes(request)
+        oAuth2RequestRepository.removeAuthorizationRequestCookies(request, response)
+    }
+
+    private fun isAuthorizedRedirectUrl(uri: String): Boolean {
+
+        val clientRedirectUri = URI.create(uri)
+        appProperties.oauth2.authorizedRedirectUrls.map {
+            val authorizedURL = URI.create(it)
+            if (authorizedURL.host.uppercase() == clientRedirectUri.host.uppercase()) {
+                return true
+            }
+        }
+        return false
+    }
 }
 
 @Component
 class OAuth2FailureHandler(@Autowired val oAuth2RequestRepository: OAuth2RequestRepository) :
     SimpleUrlAuthenticationFailureHandler() {
 
-  @Throws(IOException::class, ServletException::class)
-  override fun onAuthenticationFailure(
-      request: HttpServletRequest,
-      response: HttpServletResponse,
-      exception: AuthenticationException
-  ) {
-    var targetUrl: String =
-        getCookie(request, OAuth2RequestRepository.Companion.REDIRECT_URL_PARAM_COOKIE_NAME)?.value
-            ?: "/"
-    targetUrl =
-        UriComponentsBuilder.fromUriString(targetUrl)
-            .queryParam("error", exception.localizedMessage)
-            .build()
-            .toUriString()
-    oAuth2RequestRepository.removeAuthorizationRequestCookies(request, response)
-    redirectStrategy.sendRedirect(request, response, targetUrl)
-  }
+    @Throws(IOException::class, ServletException::class)
+    override fun onAuthenticationFailure(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        exception: AuthenticationException,
+    ) {
+        var targetUrl: String =
+            getCookie(request, OAuth2RequestRepository.Companion.REDIRECT_URL_PARAM_COOKIE_NAME)
+                ?.value ?: "/"
+        targetUrl =
+            UriComponentsBuilder.fromUriString(targetUrl)
+                .queryParam("error", exception.localizedMessage)
+                .build()
+                .toUriString()
+        oAuth2RequestRepository.removeAuthorizationRequestCookies(request, response)
+        redirectStrategy.sendRedirect(request, response, targetUrl)
+    }
 }

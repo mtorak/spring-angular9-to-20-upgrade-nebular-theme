@@ -16,19 +16,19 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 class WebSocketConfig(
     @Autowired val tokenProvider: TokenProvider,
     @Autowired val userService: UserService,
-    private val appProperties: AppProperties
+    private val appProperties: AppProperties,
 ) : WebSocketMessageBrokerConfigurer {
 
-  override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-    registry.addEndpoint("/ws").setAllowedOrigins(appProperties.cors.allowedOrigin).withSockJS()
-  }
+    override fun registerStompEndpoints(registry: StompEndpointRegistry) {
+        registry.addEndpoint("/ws").setAllowedOrigins(appProperties.cors.allowedOrigin).withSockJS()
+    }
 
-  override fun configureMessageBroker(config: MessageBrokerRegistry) {
-    config.enableSimpleBroker("/notifications")
-    config.setApplicationDestinationPrefixes("/app")
-  }
+    override fun configureMessageBroker(config: MessageBrokerRegistry) {
+        config.enableSimpleBroker("/notifications")
+        config.setApplicationDestinationPrefixes("/app")
+    }
 
-  override fun configureClientInboundChannel(registration: ChannelRegistration) {
-    registration.interceptors(CustomChannelInterceptor(tokenProvider, userService))
-  }
+    override fun configureClientInboundChannel(registration: ChannelRegistration) {
+        registration.interceptors(CustomChannelInterceptor(tokenProvider, userService))
+    }
 }

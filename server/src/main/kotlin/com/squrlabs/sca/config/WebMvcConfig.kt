@@ -9,9 +9,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebMvcConfig(private val appProperties: AppProperties) : WebMvcConfigurer {
 
-  override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-    registry
-        .addResourceHandler("/uploads/**")
-        .addResourceLocations("file:" + appProperties.uploadsFolder)
-  }
+    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
+        registry
+            .addResourceHandler("/uploads/**")
+            .addResourceLocations("file:" + appProperties.uploadsFolder)
+    }
 }

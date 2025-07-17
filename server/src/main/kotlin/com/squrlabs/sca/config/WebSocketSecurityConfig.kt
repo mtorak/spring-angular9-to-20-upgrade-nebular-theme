@@ -8,17 +8,17 @@ import org.springframework.security.config.annotation.web.socket.AbstractSecurit
 @Configuration
 class WebSocketSecurityConfig : AbstractSecurityWebSocketMessageBrokerConfigurer() {
 
-  override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry?) {
-    messages!!
-        .simpTypeMatchers(CONNECT, UNSUBSCRIBE, DISCONNECT, HEARTBEAT)
-        .permitAll()
-        .simpSubscribeDestMatchers("/notifications/**")
-        .authenticated()
-        .anyMessage()
-        .authenticated()
-  }
+    override fun configureInbound(messages: MessageSecurityMetadataSourceRegistry?) {
+        messages!!
+            .simpTypeMatchers(CONNECT, UNSUBSCRIBE, DISCONNECT, HEARTBEAT)
+            .permitAll()
+            .simpSubscribeDestMatchers("/notifications/**")
+            .authenticated()
+            .anyMessage()
+            .authenticated()
+    }
 
-  override fun sameOriginDisabled(): Boolean {
-    return true
-  }
+    override fun sameOriginDisabled(): Boolean {
+        return true
+    }
 }
