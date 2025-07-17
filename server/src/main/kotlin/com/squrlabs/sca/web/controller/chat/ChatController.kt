@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile
 class ChatController(
     @Autowired val messageService: MessageService,
     @Autowired val chatService: ChatService,
-    @Autowired val fileStorageService: FileStorageService
+    @Autowired val fileStorageService: FileStorageService,
 ) {
 
   companion object {
@@ -51,14 +51,19 @@ class ChatController(
       val friend = chatService.newConversation(user, it)
       return ResponseEntity.ok(
           FriendProfileResponse(
-              friend.id, friend.email, friend.name, friend.imgUrl, friend.blockedBy))
+              friend.id,
+              friend.email,
+              friend.name,
+              friend.imgUrl,
+              friend.blockedBy,
+          ))
     } ?: run { throw BadRequestException("Sorry no email provides") }
   }
 
   @PostMapping("/messages")
   fun getAllMessages(
       @RequestBody ids: List<String>,
-      @RequestParam("from", required = false) from: String?
+      @RequestParam("from", required = false) from: String?,
   ): ResponseEntity<List<MessageResponse>> {
     val user = getCurrentUser()
     val updatedAfter = DateTimeUtil.getDateFromString(from)
@@ -73,7 +78,12 @@ class ChatController(
     val friend = chatService.blockConversation(id, user)
     return ResponseEntity.ok(
         FriendProfileResponse(
-            friend.id, friend.email, friend.name, friend.imgUrl, friend.blockedBy))
+            friend.id,
+            friend.email,
+            friend.name,
+            friend.imgUrl,
+            friend.blockedBy,
+        ))
   }
 
   @PutMapping("/{cid}/unblock")
@@ -82,13 +92,18 @@ class ChatController(
     val friend = chatService.unblockConversation(id, user)
     return ResponseEntity.ok(
         FriendProfileResponse(
-            friend.id, friend.email, friend.name, friend.imgUrl, friend.blockedBy))
+            friend.id,
+            friend.email,
+            friend.name,
+            friend.imgUrl,
+            friend.blockedBy,
+        ))
   }
 
   @GetMapping("/{cid}/messages")
   fun getMessages(
       @PathVariable("cid") id: String,
-      @RequestParam("from", required = false) from: String?
+      @RequestParam("from", required = false) from: String?,
   ): ResponseEntity<List<MessageResponse>> {
     val user = getCurrentUser()
     val updatedAfter = DateTimeUtil.getDateFromString(from)
@@ -100,7 +115,7 @@ class ChatController(
   @PostMapping("/{cid}/messages/text")
   fun createMessageText(
       @PathVariable("cid") id: String,
-      @RequestParam("content", required = false) content: String = ""
+      @RequestParam("content", required = false) content: String = "",
   ): ResponseEntity<MessageResponse> {
     val user = getCurrentUser()
     val msg = messageService.createMessage(id, user.id!!, content, emptyList(), ContentType.TEXT)
@@ -111,7 +126,7 @@ class ChatController(
   fun createMessageFile(
       @PathVariable("cid") id: String,
       @RequestParam("content", required = false) content: String = "",
-      @RequestParam("files") files: Array<MultipartFile>
+      @RequestParam("files") files: Array<MultipartFile>,
   ): ResponseEntity<MessageResponse> {
     val user = getCurrentUser()
     val uploadedFiles = fileStorageService.store(files.toList(), id)
@@ -122,7 +137,7 @@ class ChatController(
   @PutMapping("/{cid}/messages/read")
   fun readMessage(
       @RequestBody ids: List<String>,
-      @PathVariable("cid") convId: String
+      @PathVariable("cid") convId: String,
   ): ResponseEntity<List<MessageResponse>> {
     val user = getCurrentUser()
     val messages = messageService.updateMessages(ids, convId, user.id!!)
@@ -132,5 +147,4 @@ class ChatController(
   fun getCurrentUser(): UserPrincipal {
     return SecurityContextHolder.getContext().authentication.principal as UserPrincipal
   }
-
 }

@@ -33,87 +33,100 @@ class SecurityConfig(
     @Autowired val oAuth2SuccessHandler: OAuth2SuccessHandler,
     @Autowired val oAuth2RequestRepository: OAuth2RequestRepository,
     @Autowired val oAuth2FailureHandler: OAuth2FailureHandler,
-    private val appProperties: AppProperties
+    private val appProperties: AppProperties,
 ) {
 
-  @Bean
-  fun passwordEncoder(): PasswordEncoder? {
-    return BCryptPasswordEncoder()
-  }
+    @Bean
+    fun passwordEncoder(): PasswordEncoder? {
+        return BCryptPasswordEncoder()
+    }
 
-  @Bean(BeanIds.AUTHENTICATION_MANAGER)
-  @Throws(Exception::class)
-  fun authenticationManagerBean(config: AuthenticationConfiguration): AuthenticationManager {
-    return config.authenticationManager
-  }
+    @Bean(BeanIds.AUTHENTICATION_MANAGER)
+    @Throws(Exception::class)
+    fun authenticationManagerBean(config: AuthenticationConfiguration): AuthenticationManager {
+        return config.authenticationManager
+    }
 
-  @Bean
-  fun authenticationProvider(): AuthenticationProvider {
-    val authProvider = DaoAuthenticationProvider(userService)
-    authProvider.setPasswordEncoder(passwordEncoder())
-    return authProvider
-  }
+    @Bean
+    fun authenticationProvider(): AuthenticationProvider {
+        val authProvider = DaoAuthenticationProvider(userService)
+        authProvider.setPasswordEncoder(passwordEncoder())
+        return authProvider
+    }
 
-  @Bean
-  fun securityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain {
+    @Bean
+    fun securityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain {
 
-    http
-        .csrf { it.disable() }
-        .cors { cors -> cors.configurationSource(corsConfigurationSource()) }
-        .formLogin { it.disable() }
-        .httpBasic { it.disable() }
-        .exceptionHandling { it.authenticationEntryPoint(authEntryPoint) }
-        .authorizeHttpRequests {
-          it.requestMatchers(
-                  "/",
-                  "/error",
-                  "/favicon.ico",
-                  "/**.png",
-                  "/**.gif",
-                  "/**.svg",
-                  "/**.jpg",
-                  "/**.jpeg",
-                  "/**.html",
-                  "/**.css",
-                  "/**.js",
-                  "/uploads/**")
-              .permitAll()
-              .requestMatchers("/api/account/**", "/api/docs", "/login/oauth2/code/**", "/ws/**")
-              .permitAll()
-              .anyRequest()
-              .authenticated()
-        }
-        .oauth2Login { oauth2Login ->
-          oauth2Login.authorizationEndpoint {
-            it.authorizationRequestRepository(oAuth2RequestRepository)
-          }
-          oauth2Login.userInfoEndpoint { it.userService(customOAuth2UserService) }
-          oauth2Login.successHandler(oAuth2SuccessHandler).failureHandler(oAuth2FailureHandler)
-        }
-        .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
-        .addFilterBefore(
-            tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
+        http
+            .csrf { it.disable() }
+            .cors { cors -> cors.configurationSource(corsConfigurationSource()) }
+            .formLogin { it.disable() }
+            .httpBasic { it.disable() }
+            .exceptionHandling { it.authenticationEntryPoint(authEntryPoint) }
+            .authorizeHttpRequests {
+                it.requestMatchers(
+                        "/",
+                        "/error",
+                        "/favicon.ico",
+                        "/**.png",
+                        "/**.gif",
+                        "/**.svg",
+                        "/**.jpg",
+                        "/**.jpeg",
+                        "/**.html",
+                        "/**.css",
+                        "/**.js",
+                        "/uploads/**",
+                    )
+                    .permitAll()
+                    .requestMatchers(
+                        "/api/account/**",
+                        "/api/docs",
+                        "/login/oauth2/code/**",
+                        "/ws/**",
+                    )
+                    .permitAll()
+                    .anyRequest()
+                    .authenticated()
+            }
+            .oauth2Login { oauth2Login ->
+                oauth2Login.authorizationEndpoint {
+                    it.authorizationRequestRepository(oAuth2RequestRepository)
+                }
+                oauth2Login.userInfoEndpoint { it.userService(customOAuth2UserService) }
+                oauth2Login
+                    .successHandler(oAuth2SuccessHandler)
+                    .failureHandler(oAuth2FailureHandler)
+            }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .addFilterBefore(
+                tokenAuthenticationFilter,
+                UsernamePasswordAuthenticationFilter::class.java,
+            )
 
-    return http.build()
-  }
+        return http.build()
+    }
 
-  @Bean
-  fun corsConfigurationSource(): UrlBasedCorsConfigurationSource {
+    @Bean
+    fun corsConfigurationSource(): UrlBasedCorsConfigurationSource {
 
-    val corsConfiguration = CorsConfiguration()
-    corsConfiguration.setAllowedOrigins(mutableListOf<String?>(appProperties.cors.allowedOrigin))
-    corsConfiguration.setAllowedMethods(
-        mutableListOf<String?>("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"))
-    corsConfiguration.setAllowCredentials(true)
-    corsConfiguration.setAllowedHeaders(mutableListOf<String?>("*"))
-    corsConfiguration.setMaxAge(MAX_AGE_SECS)
+        val corsConfiguration = CorsConfiguration()
+        corsConfiguration.setAllowedOrigins(
+            mutableListOf<String?>(appProperties.cors.allowedOrigin)
+        )
+        corsConfiguration.setAllowedMethods(
+            mutableListOf<String?>("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+        )
+        corsConfiguration.setAllowCredentials(true)
+        corsConfiguration.setAllowedHeaders(mutableListOf<String?>("*"))
+        corsConfiguration.setMaxAge(MAX_AGE_SECS)
 
-    val source = UrlBasedCorsConfigurationSource()
-    source.registerCorsConfiguration("/**", corsConfiguration)
-    return source
-  }
+        val source = UrlBasedCorsConfigurationSource()
+        source.registerCorsConfiguration("/**", corsConfiguration)
+        return source
+    }
 
-  companion object {
-    const val MAX_AGE_SECS: Long = 3600
-  }
+    companion object {
+        const val MAX_AGE_SECS: Long = 3600
+    }
 }
