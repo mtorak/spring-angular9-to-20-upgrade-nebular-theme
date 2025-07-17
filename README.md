@@ -176,21 +176,18 @@ After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` 
 
 ## Technologies/Design Decisions
 
-- Backend: Spring Boot 3.5 with Kotlin 2.2 on JDK 21
-- Frontend: Angular 19
+**Backend**<br>
+- Spring Boot 3.5 with Kotlin 2.2 on JDK 21
 - Database: MongoDB
 - ORM: Spring Data Mongo
 - WebSocket messaging protocol: Stomp
 - WebSocket handler: Sock.js (with cross-browser fallbacks)
 - Security: Spring Security
 - Spring Controllers couple REST as well as WebSocket traffic
+- OAuth2(Google & Facebook) or e-mail user login
 - Solid Design Principals.
 
-
-## Build
-
-#### Build and run client side(dev mode)
-
+**Frontend**<br>
 - Angular 19
 - Nebular Theme 15 (https://akveo.github.io/nebular/)
 - Bootstrap 5.3
@@ -199,20 +196,25 @@ After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` 
 - sockjs-client & stompjs
 - eva icons
 
+## Build
+
+#### Build & run backend
+- Start a mongodb instance in a docker container & create `chat_db` database
+- Right click to `ScaApplication` & Run/Debug
+
+#### Dev build & run frontend
 `cd frontend`<br>
 `nvm use 22`<br>
 `npm i`<br>
 `npx ng serve`<br>
 
-
-#### Prod build
+#### Prod build & run frontend 
 `npm install serve@11.3.0` // http server<br>
 `npx ng build --prod`<br>
 `cd dist/frontend`<br>
 `npx serve -s -p 4200`
 
 ## Features
-
 - OAUTH2 with Google and Facebook. Users can also register via email.
 - Multiple color themes available.
 - Private Friends list with blocking unwanted users.
