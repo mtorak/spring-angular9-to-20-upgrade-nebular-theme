@@ -9,20 +9,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 @Configuration
 class WebMvcConfig(private val appProperties: AppProperties) : WebMvcConfigurer {
 
-  companion object {
-    const val MAX_AGE_SECS: Long = 3600
-  }
-
-  //  override fun addCorsMappings(registry: CorsRegistry) {
-  //    registry
-  //        .addMapping("/**")
-  //        .allowedOrigins("*")
-  //        .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-  //        .allowedHeaders("*")
-  //        .allowCredentials(true)
-  //        .maxAge(MAX_AGE_SECS)
-  //  }
-
   override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
     registry
         .addResourceHandler("/uploads/**")

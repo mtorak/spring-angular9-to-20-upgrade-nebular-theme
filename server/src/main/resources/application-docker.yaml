@@ -52,3 +52,5 @@ app:
       - OAUTH_URI_ANDROID
       - OAUTH_URI_IOS
   uploadsFolder: /tmp/angular9-nebular-uploads/
+  cors:
+    allowedOrigin: http://localhost:4200

@@ -1,6 +1,5 @@
 package com.squrlabs.sca.config
 
-import com.squrlabs.sca.config.WebMvcConfig.Companion.MAX_AGE_SECS
 import com.squrlabs.sca.config.auth.service.CustomOAuth2UserService
 import com.squrlabs.sca.config.auth.tokenandcookie.*
 import com.squrlabs.sca.domain.service.user.UserService
@@ -33,7 +32,8 @@ class SecurityConfig(
     @Autowired val customOAuth2UserService: CustomOAuth2UserService,
     @Autowired val oAuth2SuccessHandler: OAuth2SuccessHandler,
     @Autowired val oAuth2RequestRepository: OAuth2RequestRepository,
-    @Autowired val oAuth2FailureHandler: OAuth2FailureHandler
+    @Autowired val oAuth2FailureHandler: OAuth2FailureHandler,
+    private val appProperties: AppProperties
 ) {
 
   @Bean
@@ -41,24 +41,11 @@ class SecurityConfig(
     return BCryptPasswordEncoder()
   }
 
-  //  @Bean(BeanIds.AUTHENTICATION_MANAGER)
-  //  @Throws(Exception::class)
-  //  override fun authenticationManagerBean(): AuthenticationManager? {
-  //    return super.authenticationManagerBean()
-  //  }
-
   @Bean(BeanIds.AUTHENTICATION_MANAGER)
   @Throws(Exception::class)
   fun authenticationManagerBean(config: AuthenticationConfiguration): AuthenticationManager {
     return config.authenticationManager
   }
-
-  //  @Throws(java.lang.Exception::class)
-  //  override fun configure(authenticationManagerBuilder: AuthenticationManagerBuilder) {
-  //    authenticationManagerBuilder
-  //        .userDetailsService<UserDetailsService>(userService)
-  //        .passwordEncoder(passwordEncoder())
-  //  }
 
   @Bean
   fun authenticationProvider(): AuthenticationProvider {
@@ -66,53 +53,6 @@ class SecurityConfig(
     authProvider.setPasswordEncoder(passwordEncoder())
     return authProvider
   }
-
-  //  override fun configure(http: HttpSecurity) {
-  //    http
-  //        .cors()
-  //        .and()
-  //        .sessionManagement()
-  //        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-  //        .and()
-  //        .csrf()
-  //        .disable()
-  //        .formLogin()
-  //        .disable()
-  //        .httpBasic()
-  //        .disable()
-  //        .exceptionHandling()
-  //        .authenticationEntryPoint(RestAuthenticationEntryPoint())
-  //        .and()
-  //        .authorizeRequests()
-  //        .antMatchers(
-  //            "/",
-  //            "/error",
-  //            "/favicon.ico",
-  //            "/**/*.png",
-  //            "/**/*.gif",
-  //            "/**/*.svg",
-  //            "/**/*.jpg",
-  //            "/**/*.jpeg",
-  //            "/**/*.html",
-  //            "/**/*.css",
-  //            "/**/*.js")
-  //        .permitAll()
-  //        .antMatchers("/api/account/**", "/api/docs", "/login/oauth2/code/**", "/ws/**")
-  //        .permitAll()
-  //        .anyRequest()
-  //        .authenticated()
-  //        .and()
-  //        .oauth2Login { oauth2Login ->
-  //          oauth2Login.authorizationEndpoint {
-  //            it.authorizationRequestRepository(oAuth2RequestRepository)
-  //          }
-  //          oauth2Login.userInfoEndpoint { it.userService(customOAuth2UserService) }
-  //          oauth2Login.successHandler(oAuth2SuccessHandler).failureHandler(oAuth2FailureHandler)
-  //        }
-  //
-  //    http.addFilterBefore(
-  //        tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-  //  }
 
   @Bean
   fun securityFilterChain(http: HttpSecurity): DefaultSecurityFilterChain {
@@ -161,7 +101,7 @@ class SecurityConfig(
   fun corsConfigurationSource(): UrlBasedCorsConfigurationSource {
 
     val corsConfiguration = CorsConfiguration()
-    corsConfiguration.setAllowedOrigins(mutableListOf<String?>("http://localhost:4200"))
+    corsConfiguration.setAllowedOrigins(mutableListOf<String?>(appProperties.cors.allowedOrigin))
     corsConfiguration.setAllowedMethods(
         mutableListOf<String?>("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"))
     corsConfiguration.setAllowCredentials(true)
@@ -171,5 +111,9 @@ class SecurityConfig(
     val source = UrlBasedCorsConfigurationSource()
     source.registerCorsConfiguration("/**", corsConfiguration)
     return source
+  }
+
+  companion object {
+    const val MAX_AGE_SECS: Long = 3600
   }
 }

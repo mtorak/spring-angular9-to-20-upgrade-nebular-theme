@@ -15,11 +15,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 class WebSocketConfig(
     @Autowired val tokenProvider: TokenProvider,
-    @Autowired val userService: UserService
+    @Autowired val userService: UserService,
+    private val appProperties: AppProperties
 ) : WebSocketMessageBrokerConfigurer {
 
   override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-    registry.addEndpoint("/ws").setAllowedOrigins("http://localhost:4200").withSockJS()
+    registry.addEndpoint("/ws").setAllowedOrigins(appProperties.cors.allowedOrigin).withSockJS()
   }
 
   override fun configureMessageBroker(config: MessageBrokerRegistry) {
