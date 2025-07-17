@@ -34,8 +34,8 @@ class UserController(
   @GetMapping("/me")
   fun getMyProfile(): UserProfile {
     val user = SecurityContextHolder.getContext().authentication.principal as UserPrincipal
-    return this.userService.getUserProfile(user.id).let {
-      UserProfile(it.id, it.email, it.name, it.imgUrl)
+    return this.userService.getUserProfile(user.id!!).let {
+      UserProfile(it.id!!, it.email, it.name, it.imgUrl)
     }
   }
 

@@ -41,7 +41,7 @@ class UserServiceImpl(@Autowired val userRepository: UserRepository) : UserServi
   }
 
   override fun updateImgUrl(user: UserPrincipal, imgUrl: String): Boolean {
-    val userEntity = userRepository.findById(user.id).get()
+    val userEntity = userRepository.findById(user.id!!).get()
 
     val updatedUser =
         UserEntity(

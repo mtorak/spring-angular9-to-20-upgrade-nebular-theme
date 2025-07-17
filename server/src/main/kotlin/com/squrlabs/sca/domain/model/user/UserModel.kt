@@ -1,7 +1,7 @@
 package com.squrlabs.sca.domain.model.user
 
 data class UserModel(
-    val id: String = "",
+    val id: String? = null,
     val name: String,
     val email: String,
     val password: String,

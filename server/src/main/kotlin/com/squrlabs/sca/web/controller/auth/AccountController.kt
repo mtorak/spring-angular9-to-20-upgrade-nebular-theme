@@ -56,7 +56,7 @@ class AccountController(
             name = userPrincipal.mName,
             email = userPrincipal.mEmail,
             imageUrl = userPrincipal.mImgUrl,
-            id = userPrincipal.id))
+            id = userPrincipal.id!!))
   }
 
   @PostMapping("/signup")

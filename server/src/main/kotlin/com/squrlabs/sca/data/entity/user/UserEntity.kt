@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 data class UserEntity(
 
     @Id
-    val id: String = "",
+    val id: String? = null,
 
     val name: String,
 

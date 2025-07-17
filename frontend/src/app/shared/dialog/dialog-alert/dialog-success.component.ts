@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { NbDialogRef } from '@nebular/theme';
 
 @Component({
-    template: `
+  template: `
     <nb-card class="dialog-card">
       <nb-card-header>{{ title }}</nb-card-header>
       <nb-card-body class="text-center">
@@ -16,16 +17,19 @@ import { NbDialogRef } from '@nebular/theme';
       </nb-card-footer>
     </nb-card>
     `,
-    standalone: false
+  standalone: false
 })
 export class DialogSuccessComponent {
 
   @Input() title: string;
   @Input() message: string;
-  constructor(protected ref: NbDialogRef<DialogSuccessComponent>) {
+  constructor(
+    protected ref: NbDialogRef<DialogSuccessComponent>,
+    private router: Router) {
   }
 
   dismiss() {
     this.ref.close();
+    this.router.navigateByUrl('/auth/signin');
   }
 }

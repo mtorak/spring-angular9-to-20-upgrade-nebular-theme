@@ -6,10 +6,10 @@ import { UserProfile } from 'src/app/_dtos/user/UserProfile';
 import { delay } from 'rxjs/operators';
 
 @Component({
-    selector: 'app-token',
-    templateUrl: './token.component.html',
-    styleUrls: ['./token.component.scss'],
-    standalone: false
+  selector: 'app-token',
+  templateUrl: './token.component.html',
+  styleUrls: ['./token.component.scss'],
+  standalone: false
 })
 export class TokenComponent implements OnInit {
 
@@ -18,7 +18,12 @@ export class TokenComponent implements OnInit {
   token: string
   redirect = "/loading"
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private userService: UserService, private router: Router) {
+  constructor(
+    private route: ActivatedRoute,
+    private authService: AuthService,
+    private userService: UserService,
+    private router: Router) {
+
     this.route.queryParams.subscribe(params => {
       this.token = params['token'];
       this.authService.setToken(this.token)

@@ -37,7 +37,7 @@ class ChatController(
   ): ResponseEntity<List<FriendProfileResponse>> {
     val user = getCurrentUser()
     val updatedAfter = DateTimeUtil.getDateFromString(from)
-    val friends = chatService.getConversations(user.id, updatedAfter)
+    val friends = chatService.getConversations(user.id!!, updatedAfter)
     return ResponseEntity.ok(
         friends.map { FriendProfileResponse(it.id, it.email, it.name, it.imgUrl, it.blockedBy) })
   }
@@ -62,7 +62,7 @@ class ChatController(
   ): ResponseEntity<List<MessageResponse>> {
     val user = getCurrentUser()
     val updatedAfter = DateTimeUtil.getDateFromString(from)
-    val messages = messageService.getAllMessages(ids, user.id, updatedAfter)
+    val messages = messageService.getAllMessages(ids, user.id!!, updatedAfter)
 
     return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
   }
@@ -92,7 +92,7 @@ class ChatController(
   ): ResponseEntity<List<MessageResponse>> {
     val user = getCurrentUser()
     val updatedAfter = DateTimeUtil.getDateFromString(from)
-    val messages = messageService.getMessagesByChat(id, user.id, updatedAfter)
+    val messages = messageService.getMessagesByChat(id, user.id!!, updatedAfter)
 
     return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
   }
@@ -103,7 +103,7 @@ class ChatController(
       @RequestParam("content", required = false) content: String = ""
   ): ResponseEntity<MessageResponse> {
     val user = getCurrentUser()
-    val msg = messageService.createMessage(id, user.id, content, emptyList(), ContentType.TEXT)
+    val msg = messageService.createMessage(id, user.id!!, content, emptyList(), ContentType.TEXT)
     return ResponseEntity.ok(MessageResponseMapper.from(msg))
   }
 
@@ -115,7 +115,7 @@ class ChatController(
   ): ResponseEntity<MessageResponse> {
     val user = getCurrentUser()
     val uploadedFiles = fileStorageService.store(files.toList(), id)
-    val msg = messageService.createMessage(id, user.id, content, uploadedFiles, ContentType.FILE)
+    val msg = messageService.createMessage(id, user.id!!, content, uploadedFiles, ContentType.FILE)
     return ResponseEntity.ok(MessageResponseMapper.from(msg))
   }
 
@@ -125,7 +125,7 @@ class ChatController(
       @PathVariable("cid") convId: String
   ): ResponseEntity<List<MessageResponse>> {
     val user = getCurrentUser()
-    val messages = messageService.updateMessages(ids, convId, user.id)
+    val messages = messageService.updateMessages(ids, convId, user.id!!)
     return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
   }
 

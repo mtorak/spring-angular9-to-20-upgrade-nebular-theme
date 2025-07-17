@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.oauth2.core.user.OAuth2User
 
 class UserPrincipal(
-    val id: String, val mEmail: String, val mPassword: String, val mAuthorities: Collection<GrantedAuthority?>,
+    val id: String?, val mEmail: String, val mPassword: String, val mAuthorities: Collection<GrantedAuthority?>,
     val mAttributes: Map<String, Any>, val mName: String, val mImgUrl: String
 ) : OAuth2User, UserDetails {
 

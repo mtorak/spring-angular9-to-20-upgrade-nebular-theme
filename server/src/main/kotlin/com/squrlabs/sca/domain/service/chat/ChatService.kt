@@ -27,7 +27,7 @@ class ChatServiceImpl(
   override fun newConversation(user: UserPrincipal, email: String): FriendProfileModel {
     userRepository.findByEmail(email).toNullable()?.let { friend ->
       chatRepository
-          .findByUser1AndUser2OrUser1AndUser2(user.id, friend.id, friend.id, user.id)
+          .findByUser1AndUser2OrUser1AndUser2(user.id!!, friend.id!!, friend.id, user.id)
           .toNullable()
           ?.let { throw BadRequestException("User already exist by email:$email") }
           ?: run {

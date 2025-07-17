@@ -39,17 +39,17 @@ export class SigninComponent implements OnInit {
       let data = this.signInFrom.value
       this.loading = true
       this._authService.login(new SignInRequest(data['email'], data['password']))
-        .subscribe(
-          (response: SignInResponse) => {
+        .subscribe({
+          next: (response: SignInResponse) => {
             this.router.navigateByUrl(this.redirect)
             this.loading = false
-          }, (err: any) => {
+          }, error: (err: any) => {
             this.loading = false
             console.log(err.error.message)
             this.toastrService.show('User not found!', 'Invalid E-Mail',
               { status: 'danger', duration: 4000 });
           }
-        )
+        })
     }
   }
 
