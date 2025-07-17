@@ -176,7 +176,7 @@ After updating to bootstrap 5.3.7, needed to change `ml-*` and `mr-*` to `ms-*` 
 
 ## Technologies/Design Decisions
 
-- Backend: Spring Boot 3.5 with Kotlin 
+- Backend: Spring Boot 3.5 with Kotlin 2.2 on JDK 21
 - Frontend: Angular 19
 - Database: MongoDB
 - ORM: Spring Data Mongo
