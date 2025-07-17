@@ -3,18 +3,14 @@ package com.squrlabs.sca.util
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.util.SerializationUtils
 import java.util.*
-
+import org.springframework.util.SerializationUtils
 
 object CookieUtils {
 
     fun getCookie(request: HttpServletRequest?, name: String?): Cookie? {
         val cookies = request?.cookies
-        cookies?.map {
-            if (it.name == name)
-                return it
-        }
+        cookies?.map { if (it.name == name) return it }
         return null
     }
 
@@ -39,15 +35,10 @@ object CookieUtils {
     }
 
     fun serialize(`object`: Any?): String {
-        return Base64.getUrlEncoder()
-            .encodeToString(SerializationUtils.serialize(`object`))
+        return Base64.getUrlEncoder().encodeToString(SerializationUtils.serialize(`object`))
     }
 
     fun <T> deserialize(cookie: Cookie, cls: Class<T>): T {
-        return cls.cast(
-            SerializationUtils.deserialize(
-                Base64.getUrlDecoder().decode(cookie.value)
-            )
-        )
+        return cls.cast(SerializationUtils.deserialize(Base64.getUrlDecoder().decode(cookie.value)))
     }
 }

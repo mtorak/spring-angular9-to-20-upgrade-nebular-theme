@@ -2,10 +2,10 @@ package com.squrlabs.sca.data.entity.chat
 
 import com.squrlabs.sca.domain.model.chat.ContentType
 import com.squrlabs.sca.domain.model.chat.MessageModel
+import java.util.*
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.util.*
 
 @Document("messages")
 data class MessageEntity(
@@ -17,19 +17,20 @@ data class MessageEntity(
     val contentType: ContentType,
     val createdAt: Date,
     val updatedAt: Date,
-    val read: Boolean
+    val read: Boolean,
 )
 
 object MessageMapper {
-    fun to(entity: MessageEntity) = MessageModel(
-        id = entity.id!!,
-        senderId = entity.senderId,
-        chatId = entity.conversationId,
-        content = entity.content,
-        files = entity.files.map { FileMapper.to(it) },
-        contentType = entity.contentType,
-        createdAt = entity.createdAt,
-        updatedAt = entity.updatedAt,
-        read = entity.read
-    )
+    fun to(entity: MessageEntity) =
+        MessageModel(
+            id = entity.id!!,
+            senderId = entity.senderId,
+            chatId = entity.conversationId,
+            content = entity.content,
+            files = entity.files.map { FileMapper.to(it) },
+            contentType = entity.contentType,
+            createdAt = entity.createdAt,
+            updatedAt = entity.updatedAt,
+            read = entity.read,
+        )
 }

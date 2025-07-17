@@ -1,8 +1,8 @@
 package com.squrlabs.sca.domain.model.chat
 
-enum class ContentType{
+enum class ContentType {
     TEXT,
     FILE,
     MAP,
-    INFO
+    INFO,
 }

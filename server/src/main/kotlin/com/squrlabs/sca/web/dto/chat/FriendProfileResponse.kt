@@ -5,5 +5,5 @@ data class FriendProfileResponse(
     val email: String,
     val name: String,
     val imgUrl: String,
-    val blockedBy: String
+    val blockedBy: String,
 )

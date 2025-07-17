@@ -23,102 +23,111 @@ import org.springframework.stereotype.Service
 class MessageServiceImpl(
     @Autowired val simpMessagingTemplate: SimpMessagingTemplate,
     @Autowired val chatRepository: ChatRepository,
-    @Autowired val messageRepository: MessageRepository
+    @Autowired val messageRepository: MessageRepository,
 ) : MessageService {
 
-  override fun getAllMessages(
-      ids: List<String>,
-      userId: String,
-      updatedAt: Date
-  ): List<MessageModel> {
-    val msgs = ArrayList<MessageModel>()
-    chatRepository.findAllById(ids).map { chat ->
-      if (chat.user1 != userId && chat.user2 != userId) return@map null
-      messageRepository.findAllByConversationIdAndUpdatedAtAfter(chat.id!!, updatedAt).map {
-        msgs.add(MessageMapper.to(it))
-      }
-    }
-    return msgs
-  }
-
-  override fun getMessagesByChat(id: String, userId: String, updatedAt: Date): List<MessageModel> {
-    chatRepository.findById(id).toNullable()?.let { chat ->
-      if (chat.user1 == userId || chat.user2 == userId) {
-        return messageRepository.findAllByConversationIdAndUpdatedAtAfter(id, updatedAt).map {
-          MessageMapper.to(it)
+    override fun getAllMessages(
+        ids: List<String>,
+        userId: String,
+        updatedAt: Date,
+    ): List<MessageModel> {
+        val msgs = ArrayList<MessageModel>()
+        chatRepository.findAllById(ids).map { chat ->
+            if (chat.user1 != userId && chat.user2 != userId) return@map null
+            messageRepository.findAllByConversationIdAndUpdatedAtAfter(chat.id!!, updatedAt).map {
+                msgs.add(MessageMapper.to(it))
+            }
         }
-      }
-    }
-    return emptyList()
-  }
-
-  override fun updateMessages(
-      ids: List<String>,
-      chatId: String,
-      userId: String
-  ): List<MessageModel> {
-    val updatedMessages = ArrayList<MessageModel>()
-    var friendId: String? = null
-    chatRepository.findById(chatId).toNullable()?.let { chat ->
-      if (chat.user1 != userId && chat.user2 != userId) return emptyList()
-      friendId = if (chat.user1 == userId) chat.user2 else chat.user1
-      val messages = this.messageRepository.findAllById(ids).filter { it.senderId != userId }
-      this.messageRepository
-          .saveAll(messages.map { it.copy(read = true, updatedAt = Date()) })
-          .map { updatedMessages.add(MessageMapper.to(it)) }
+        return msgs
     }
 
-    friendId?.let {
-      simpMessagingTemplate.convertAndSend(
-          "/notifications/${it}", SocketModel(SocketType.USER_MESSAGE_UPDATED, updatedMessages))
+    override fun getMessagesByChat(
+        id: String,
+        userId: String,
+        updatedAt: Date,
+    ): List<MessageModel> {
+        chatRepository.findById(id).toNullable()?.let { chat ->
+            if (chat.user1 == userId || chat.user2 == userId) {
+                return messageRepository
+                    .findAllByConversationIdAndUpdatedAtAfter(id, updatedAt)
+                    .map { MessageMapper.to(it) }
+            }
+        }
+        return emptyList()
     }
-    return updatedMessages
-  }
 
-  override fun createMessage(
-      chatId: String,
-      userId: String,
-      content: String,
-      files: List<FileModel>,
-      contentType: ContentType
-  ): MessageModel {
-    chatRepository.findById(chatId).toNullable()?.let {
-      if ((it.user1 == userId || it.user2 == userId) && it.blockedBy == "") {
-        val msg =
-            messageRepository.save(
-                MessageEntity(
-                    null,
-                    userId,
-                    chatId,
-                    content,
-                    files.map { file -> FileMapper.from(file) },
-                    contentType,
-                    Date(),
-                    Date(),
-                    false))
-        simpMessagingTemplate.convertAndSend(
-            "/notifications/${if (it.user1 == userId) it.user2 else it.user1}",
-            SocketModel(SocketType.USER_MESSAGE_ADDED, MessageMapper.to(msg)))
-        return MessageMapper.to(msg)
-      } else {
-        throw BadRequestException("Sorry you're blocked by user")
-      }
-    } ?: run { throw ResourceNotFoundException("Conversation", "id", chatId) }
-  }
+    override fun updateMessages(
+        ids: List<String>,
+        chatId: String,
+        userId: String,
+    ): List<MessageModel> {
+        val updatedMessages = ArrayList<MessageModel>()
+        var friendId: String? = null
+        chatRepository.findById(chatId).toNullable()?.let { chat ->
+            if (chat.user1 != userId && chat.user2 != userId) return emptyList()
+            friendId = if (chat.user1 == userId) chat.user2 else chat.user1
+            val messages = this.messageRepository.findAllById(ids).filter { it.senderId != userId }
+            this.messageRepository
+                .saveAll(messages.map { it.copy(read = true, updatedAt = Date()) })
+                .map { updatedMessages.add(MessageMapper.to(it)) }
+        }
+
+        friendId?.let {
+            simpMessagingTemplate.convertAndSend(
+                "/notifications/${it}",
+                SocketModel(SocketType.USER_MESSAGE_UPDATED, updatedMessages),
+            )
+        }
+        return updatedMessages
+    }
+
+    override fun createMessage(
+        chatId: String,
+        userId: String,
+        content: String,
+        files: List<FileModel>,
+        contentType: ContentType,
+    ): MessageModel {
+        chatRepository.findById(chatId).toNullable()?.let {
+            if ((it.user1 == userId || it.user2 == userId) && it.blockedBy == "") {
+                val msg =
+                    messageRepository.save(
+                        MessageEntity(
+                            null,
+                            userId,
+                            chatId,
+                            content,
+                            files.map { file -> FileMapper.from(file) },
+                            contentType,
+                            Date(),
+                            Date(),
+                            false,
+                        )
+                    )
+                simpMessagingTemplate.convertAndSend(
+                    "/notifications/${if (it.user1 == userId) it.user2 else it.user1}",
+                    SocketModel(SocketType.USER_MESSAGE_ADDED, MessageMapper.to(msg)),
+                )
+                return MessageMapper.to(msg)
+            } else {
+                throw BadRequestException("Sorry you're blocked by user")
+            }
+        } ?: run { throw ResourceNotFoundException("Conversation", "id", chatId) }
+    }
 }
 
 interface MessageService {
-  fun getMessagesByChat(id: String, userId: String, updatedAt: Date): List<MessageModel>
+    fun getMessagesByChat(id: String, userId: String, updatedAt: Date): List<MessageModel>
 
-  fun getAllMessages(ids: List<String>, userId: String, updatedAt: Date): List<MessageModel>
+    fun getAllMessages(ids: List<String>, userId: String, updatedAt: Date): List<MessageModel>
 
-  fun updateMessages(ids: List<String>, chatId: String, userId: String): List<MessageModel>
+    fun updateMessages(ids: List<String>, chatId: String, userId: String): List<MessageModel>
 
-  fun createMessage(
-      chatId: String,
-      userId: String,
-      content: String,
-      files: List<FileModel>,
-      contentType: ContentType
-  ): MessageModel
+    fun createMessage(
+        chatId: String,
+        userId: String,
+        content: String,
+        files: List<FileModel>,
+        contentType: ContentType,
+    ): MessageModel
 }

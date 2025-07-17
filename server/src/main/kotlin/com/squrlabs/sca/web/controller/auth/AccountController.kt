@@ -31,51 +31,57 @@ class AccountController(
     @Autowired private val authenticationManager: AuthenticationManager,
     @Autowired private val userService: UserService,
     @Autowired private val passwordEncoder: PasswordEncoder,
-    @Autowired private val tokenProvider: TokenProvider
+    @Autowired private val tokenProvider: TokenProvider,
 ) {
 
-  companion object {
-    const val AUTH_BASE_URI = "/api/account"
-  }
-
-  @PostMapping("/signin")
-  fun authenticateUser(
-      @Valid @RequestBody loginRequest: LoginRequest
-  ): ResponseEntity<AuthResponse>? {
-    val authentication: Authentication =
-        authenticationManager.authenticate(
-            UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password))
-
-    SecurityContextHolder.getContext().authentication = authentication
-    val token = tokenProvider.createToken(authentication)
-    val userPrincipal = authentication.principal as UserPrincipal
-
-    return ResponseEntity.ok(
-        AuthResponse(
-            accessToken = token,
-            name = userPrincipal.mName,
-            email = userPrincipal.mEmail,
-            imageUrl = userPrincipal.mImgUrl,
-            id = userPrincipal.id!!))
-  }
-
-  @PostMapping("/signup")
-  fun registerUser(@Valid @RequestBody signUpRequest: SignUpRequest): ResponseEntity<ApiResponse>? {
-    if (userService.existsByEmail(signUpRequest.email)) {
-      throw BadRequestException("Email address already in use.")
+    companion object {
+        const val AUTH_BASE_URI = "/api/account"
     }
-    // Creating user's account
-    val user =
-        UserModel(
-            name = signUpRequest.name,
-            email = signUpRequest.email,
-            password = passwordEncoder.encode(signUpRequest.password),
-            imgUrl = "",
-            roles = listOf("USER_ROLE"),
-            providerId = "",
-            provider = AuthProvider.local)
 
-    val result = userService.saveUser(user)
-    return ResponseEntity.ok(ApiResponse(true, "User registered successfully@"))
-  }
+    @PostMapping("/signin")
+    fun authenticateUser(
+        @Valid @RequestBody loginRequest: LoginRequest
+    ): ResponseEntity<AuthResponse>? {
+        val authentication: Authentication =
+            authenticationManager.authenticate(
+                UsernamePasswordAuthenticationToken(loginRequest.email, loginRequest.password)
+            )
+
+        SecurityContextHolder.getContext().authentication = authentication
+        val token = tokenProvider.createToken(authentication)
+        val userPrincipal = authentication.principal as UserPrincipal
+
+        return ResponseEntity.ok(
+            AuthResponse(
+                accessToken = token,
+                name = userPrincipal.mName,
+                email = userPrincipal.mEmail,
+                imageUrl = userPrincipal.mImgUrl,
+                id = userPrincipal.id!!,
+            )
+        )
+    }
+
+    @PostMapping("/signup")
+    fun registerUser(
+        @Valid @RequestBody signUpRequest: SignUpRequest
+    ): ResponseEntity<ApiResponse>? {
+        if (userService.existsByEmail(signUpRequest.email)) {
+            throw BadRequestException("Email address already in use.")
+        }
+        // Creating user's account
+        val user =
+            UserModel(
+                name = signUpRequest.name,
+                email = signUpRequest.email,
+                password = passwordEncoder.encode(signUpRequest.password),
+                imgUrl = "",
+                roles = listOf("USER_ROLE"),
+                providerId = "",
+                provider = AuthProvider.local,
+            )
+
+        val result = userService.saveUser(user)
+        return ResponseEntity.ok(ApiResponse(true, "User registered successfully@"))
+    }
 }

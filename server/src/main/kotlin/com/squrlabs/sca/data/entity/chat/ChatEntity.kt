@@ -15,5 +15,5 @@ data class ChatEntity(
     @Indexed(unique = false) val user2: String,
     val blockedBy: String,
     val createdAt: Date,
-    val updatedAt: Date
+    val updatedAt: Date,
 )

@@ -6,5 +6,5 @@ data class AuthResponse(
     val name: String,
     val email: String,
     val imageUrl: String,
-    val id: String
+    val id: String,
 )

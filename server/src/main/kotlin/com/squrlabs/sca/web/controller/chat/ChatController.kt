@@ -27,124 +27,130 @@ class ChatController(
     @Autowired val fileStorageService: FileStorageService,
 ) {
 
-  companion object {
-    const val USER_CHAT_BASE_URI = "/api/chat"
-  }
+    companion object {
+        const val USER_CHAT_BASE_URI = "/api/chat"
+    }
 
-  @GetMapping
-  fun getFriends(
-      @RequestParam("from", required = false) from: String?
-  ): ResponseEntity<List<FriendProfileResponse>> {
-    val user = getCurrentUser()
-    val updatedAfter = DateTimeUtil.getDateFromString(from)
-    val friends = chatService.getConversations(user.id!!, updatedAfter)
-    return ResponseEntity.ok(
-        friends.map { FriendProfileResponse(it.id, it.email, it.name, it.imgUrl, it.blockedBy) })
-  }
+    @GetMapping
+    fun getFriends(
+        @RequestParam("from", required = false) from: String?
+    ): ResponseEntity<List<FriendProfileResponse>> {
+        val user = getCurrentUser()
+        val updatedAfter = DateTimeUtil.getDateFromString(from)
+        val friends = chatService.getConversations(user.id!!, updatedAfter)
+        return ResponseEntity.ok(
+            friends.map { FriendProfileResponse(it.id, it.email, it.name, it.imgUrl, it.blockedBy) }
+        )
+    }
 
-  @PostMapping
-  fun startConversation(
-      @RequestParam("email", required = true) email: String?
-  ): ResponseEntity<FriendProfileResponse> {
-    val user = getCurrentUser()
-    email?.let {
-      val friend = chatService.newConversation(user, it)
-      return ResponseEntity.ok(
-          FriendProfileResponse(
-              friend.id,
-              friend.email,
-              friend.name,
-              friend.imgUrl,
-              friend.blockedBy,
-          ))
-    } ?: run { throw BadRequestException("Sorry no email provides") }
-  }
+    @PostMapping
+    fun startConversation(
+        @RequestParam("email", required = true) email: String?
+    ): ResponseEntity<FriendProfileResponse> {
+        val user = getCurrentUser()
+        email?.let {
+            val friend = chatService.newConversation(user, it)
+            return ResponseEntity.ok(
+                FriendProfileResponse(
+                    friend.id,
+                    friend.email,
+                    friend.name,
+                    friend.imgUrl,
+                    friend.blockedBy,
+                )
+            )
+        } ?: run { throw BadRequestException("Sorry no email provides") }
+    }
 
-  @PostMapping("/messages")
-  fun getAllMessages(
-      @RequestBody ids: List<String>,
-      @RequestParam("from", required = false) from: String?,
-  ): ResponseEntity<List<MessageResponse>> {
-    val user = getCurrentUser()
-    val updatedAfter = DateTimeUtil.getDateFromString(from)
-    val messages = messageService.getAllMessages(ids, user.id!!, updatedAfter)
+    @PostMapping("/messages")
+    fun getAllMessages(
+        @RequestBody ids: List<String>,
+        @RequestParam("from", required = false) from: String?,
+    ): ResponseEntity<List<MessageResponse>> {
+        val user = getCurrentUser()
+        val updatedAfter = DateTimeUtil.getDateFromString(from)
+        val messages = messageService.getAllMessages(ids, user.id!!, updatedAfter)
 
-    return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
-  }
+        return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
+    }
 
-  @PutMapping("/{cid}/block")
-  fun blockUser(@PathVariable("cid") id: String): ResponseEntity<FriendProfileResponse> {
-    val user = getCurrentUser()
-    val friend = chatService.blockConversation(id, user)
-    return ResponseEntity.ok(
-        FriendProfileResponse(
-            friend.id,
-            friend.email,
-            friend.name,
-            friend.imgUrl,
-            friend.blockedBy,
-        ))
-  }
+    @PutMapping("/{cid}/block")
+    fun blockUser(@PathVariable("cid") id: String): ResponseEntity<FriendProfileResponse> {
+        val user = getCurrentUser()
+        val friend = chatService.blockConversation(id, user)
+        return ResponseEntity.ok(
+            FriendProfileResponse(
+                friend.id,
+                friend.email,
+                friend.name,
+                friend.imgUrl,
+                friend.blockedBy,
+            )
+        )
+    }
 
-  @PutMapping("/{cid}/unblock")
-  fun unblockUser(@PathVariable("cid") id: String): ResponseEntity<FriendProfileResponse> {
-    val user = getCurrentUser()
-    val friend = chatService.unblockConversation(id, user)
-    return ResponseEntity.ok(
-        FriendProfileResponse(
-            friend.id,
-            friend.email,
-            friend.name,
-            friend.imgUrl,
-            friend.blockedBy,
-        ))
-  }
+    @PutMapping("/{cid}/unblock")
+    fun unblockUser(@PathVariable("cid") id: String): ResponseEntity<FriendProfileResponse> {
+        val user = getCurrentUser()
+        val friend = chatService.unblockConversation(id, user)
+        return ResponseEntity.ok(
+            FriendProfileResponse(
+                friend.id,
+                friend.email,
+                friend.name,
+                friend.imgUrl,
+                friend.blockedBy,
+            )
+        )
+    }
 
-  @GetMapping("/{cid}/messages")
-  fun getMessages(
-      @PathVariable("cid") id: String,
-      @RequestParam("from", required = false) from: String?,
-  ): ResponseEntity<List<MessageResponse>> {
-    val user = getCurrentUser()
-    val updatedAfter = DateTimeUtil.getDateFromString(from)
-    val messages = messageService.getMessagesByChat(id, user.id!!, updatedAfter)
+    @GetMapping("/{cid}/messages")
+    fun getMessages(
+        @PathVariable("cid") id: String,
+        @RequestParam("from", required = false) from: String?,
+    ): ResponseEntity<List<MessageResponse>> {
+        val user = getCurrentUser()
+        val updatedAfter = DateTimeUtil.getDateFromString(from)
+        val messages = messageService.getMessagesByChat(id, user.id!!, updatedAfter)
 
-    return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
-  }
+        return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
+    }
 
-  @PostMapping("/{cid}/messages/text")
-  fun createMessageText(
-      @PathVariable("cid") id: String,
-      @RequestParam("content", required = false) content: String = "",
-  ): ResponseEntity<MessageResponse> {
-    val user = getCurrentUser()
-    val msg = messageService.createMessage(id, user.id!!, content, emptyList(), ContentType.TEXT)
-    return ResponseEntity.ok(MessageResponseMapper.from(msg))
-  }
+    @PostMapping("/{cid}/messages/text")
+    fun createMessageText(
+        @PathVariable("cid") id: String,
+        @RequestParam("content", required = false) content: String = "",
+    ): ResponseEntity<MessageResponse> {
+        val user = getCurrentUser()
+        val msg =
+            messageService.createMessage(id, user.id!!, content, emptyList(), ContentType.TEXT)
+        return ResponseEntity.ok(MessageResponseMapper.from(msg))
+    }
 
-  @PostMapping("/{cid}/messages/files", consumes = ["multipart/form-data"])
-  fun createMessageFile(
-      @PathVariable("cid") id: String,
-      @RequestParam("content", required = false) content: String = "",
-      @RequestParam("files") files: Array<MultipartFile>,
-  ): ResponseEntity<MessageResponse> {
-    val user = getCurrentUser()
-    val uploadedFiles = fileStorageService.store(files.toList(), id)
-    val msg = messageService.createMessage(id, user.id!!, content, uploadedFiles, ContentType.FILE)
-    return ResponseEntity.ok(MessageResponseMapper.from(msg))
-  }
+    @PostMapping("/{cid}/messages/files", consumes = ["multipart/form-data"])
+    fun createMessageFile(
+        @PathVariable("cid") id: String,
+        @RequestParam("content", required = false) content: String = "",
+        @RequestParam("files") files: Array<MultipartFile>,
+    ): ResponseEntity<MessageResponse> {
+        val user = getCurrentUser()
+        val uploadedFiles = fileStorageService.store(files.toList(), id)
+        val msg =
+            messageService.createMessage(id, user.id!!, content, uploadedFiles, ContentType.FILE)
+        return ResponseEntity.ok(MessageResponseMapper.from(msg))
+    }
 
-  @PutMapping("/{cid}/messages/read")
-  fun readMessage(
-      @RequestBody ids: List<String>,
-      @PathVariable("cid") convId: String,
-  ): ResponseEntity<List<MessageResponse>> {
-    val user = getCurrentUser()
-    val messages = messageService.updateMessages(ids, convId, user.id!!)
-    return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
-  }
+    @PutMapping("/{cid}/messages/read")
+    fun readMessage(
+        @RequestBody ids: List<String>,
+        @PathVariable("cid") convId: String,
+    ): ResponseEntity<List<MessageResponse>> {
+        val user = getCurrentUser()
+        val messages = messageService.updateMessages(ids, convId, user.id!!)
+        return ResponseEntity.ok(messages.map { MessageResponseMapper.from(it) })
+    }
 
-  fun getCurrentUser(): UserPrincipal {
-    return SecurityContextHolder.getContext().authentication.principal as UserPrincipal
-  }
+    fun getCurrentUser(): UserPrincipal {
+        return SecurityContextHolder.getContext().authentication.principal as UserPrincipal
+    }
 }

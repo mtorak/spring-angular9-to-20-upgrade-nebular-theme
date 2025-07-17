@@ -12,5 +12,5 @@ data class UserModel(
     val credentialsExpired: Boolean = false,
     val provider: AuthProvider,
     val providerId: String,
-    val roles: List<String> = emptyList()
+    val roles: List<String> = emptyList(),
 )

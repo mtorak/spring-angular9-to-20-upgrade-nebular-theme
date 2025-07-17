@@ -4,5 +4,5 @@ data class UploadResponse(
     val fileName: String = "",
     val fileUrl: String = "",
     val status: String = "",
-    val detail: String = ""
+    val detail: String = "",
 )
