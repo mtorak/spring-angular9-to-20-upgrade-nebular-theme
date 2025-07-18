@@ -1,0 +1,76 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36" version="28.0.5">
+  <diagram name="Page-1" id="aHIf9n0Vb7V7H17RqCqO">
+    <mxGraphModel dx="1144" dy="601" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="prlajQv1erLYUOoYF9LD-1" value="&lt;b&gt;Browser&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;shadow=1;strokeColor=#B09500;fillColor=#DCE239;fontColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="40" y="240" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="prlajQv1erLYUOoYF9LD-4" target="prlajQv1erLYUOoYF9LD-10" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-4" value="redirect: &lt;b&gt;/&lt;/b&gt; to &lt;b&gt;/loading&lt;/b&gt;&lt;div&gt;(No component rendered yet)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="230" y="221" width="130" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-8" value="call &lt;b&gt;/&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="140" y="230" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="prlajQv1erLYUOoYF9LD-10" target="prlajQv1erLYUOoYF9LD-12" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-10" value="found &lt;b&gt;/loading &lt;/b&gt;route in&amp;nbsp;&lt;i&gt;home-routing.module.ts&lt;/i&gt;, it requires parent &lt;b&gt;HomeComponent&lt;/b&gt; render and &lt;b&gt;HomeComponent&lt;/b&gt; has &lt;b&gt;AuthGuard&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="440" y="215" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-15" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="prlajQv1erLYUOoYF9LD-12" target="prlajQv1erLYUOoYF9LD-14" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-12" value="Since there is no valid token,&lt;b&gt; auth.guard.ts &lt;/b&gt;redirects to &lt;b&gt;/auth/signin&amp;nbsp;&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="680" y="220" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-14" value="on &lt;b&gt;SignInComponent &lt;/b&gt;after successful signin, it redirects to &lt;b&gt;/&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="900" y="219" width="160" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.588;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="prlajQv1erLYUOoYF9LD-1" target="prlajQv1erLYUOoYF9LD-4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-19" value="&lt;b&gt;Browser&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;glass=0;shadow=1;strokeWidth=2;strokeColor=#B09500;fillColor=#DCE239;fontColor=#000000;" parent="1" vertex="1">
+          <mxGeometry x="50" y="537" width="90" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="prlajQv1erLYUOoYF9LD-21" target="prlajQv1erLYUOoYF9LD-24" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-21" value="redirect: &lt;b&gt;/&lt;/b&gt; to &lt;b&gt;/loading&lt;/b&gt;&lt;div&gt;(Since there is valid token, &lt;b&gt;HomeComponent&lt;/b&gt; and &lt;b&gt;LoadingComponent&lt;/b&gt; are rendered)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="220" y="512" width="160" height="102" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-22" value="call &lt;b&gt;/&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
+          <mxGeometry x="150" y="527" width="50" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="prlajQv1erLYUOoYF9LD-24" target="prlajQv1erLYUOoYF9LD-26" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-24" value="HomeComponent observes &quot;&lt;b&gt;fetch&lt;/b&gt;&quot; hot observable and when it&#39;s ready redirects to &lt;b&gt;/chat &lt;/b&gt;otherwise to &lt;b&gt;/loading&lt;/b&gt; again" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="450" y="512" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="prlajQv1erLYUOoYF9LD-26" target="prlajQv1erLYUOoYF9LD-27" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-26" value="LoadingComponent fetches profile, friends and messages and updates &quot;&lt;b&gt;fetch&lt;/b&gt;&quot; hot observable respectively" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="690" y="511" width="160" height="87" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-27" value="if &quot;&lt;b&gt;fetch&quot; &lt;/b&gt;hot observable is ready, &lt;b&gt;ChatComponent&lt;/b&gt; is rendered" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;strokeWidth=2;" parent="1" vertex="1">
+          <mxGeometry x="910" y="516" width="160" height="82" as="geometry" />
+        </mxCell>
+        <mxCell id="prlajQv1erLYUOoYF9LD-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.588;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="prlajQv1erLYUOoYF9LD-19" target="prlajQv1erLYUOoYF9LD-21" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ipLwz2hUBPmzaz20Ue_h-1" value="No Auth Flow" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#006EAF;fillColor=light-dark(#61caff, #198cc4);fontSize=32;rounded=1;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="410" y="110" width="210" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="ipLwz2hUBPmzaz20Ue_h-2" value="&lt;span&gt;With Auth Flow&lt;/span&gt;" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#006EAF;fillColor=light-dark(#61caff, #198cc4);fontSize=32;rounded=1;fontColor=#ffffff;fontStyle=0" vertex="1" parent="1">
+          <mxGeometry x="410" y="410" width="240" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
