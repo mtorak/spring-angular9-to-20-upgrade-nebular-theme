@@ -15,7 +15,7 @@ import { NbToastrService } from '@nebular/theme';
 })
 export class SigninComponent implements OnInit {
 
-  loading: Boolean = false
+  loading = false
   signInFrom: UntypedFormGroup
   redirect = "/"
 
@@ -36,7 +36,7 @@ export class SigninComponent implements OnInit {
 
   login() {
     if (this.signInFrom.valid) {
-      let data = this.signInFrom.value
+      const data = this.signInFrom.value
       this.loading = true
       this._authService.login(new SignInRequest(data['email'], data['password']))
         .subscribe({

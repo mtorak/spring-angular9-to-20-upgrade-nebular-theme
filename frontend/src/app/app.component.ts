@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -9,12 +9,12 @@ import { filter } from 'rxjs/operators';
     styleUrls: ['./app.component.scss'],
     standalone: false
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   title = 'frontend';
 
   private routerSubscription: Subscription;
-  
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) { 
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -44,7 +44,7 @@ export class AppComponent {
         //   console.log('  Query Parameters:', queryParams);
         //   console.log('  Fragment:', fragment);
         //   console.log('  Data:', routeData);
-        // 
+        //
         }
       });
   }

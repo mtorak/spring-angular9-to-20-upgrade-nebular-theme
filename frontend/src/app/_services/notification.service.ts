@@ -25,7 +25,7 @@ export class NotificationService {
 
   suscribe() {
 
-    let ws = new SockJS(`${environment.DOMAIN}/ws`);
+    const ws = new SockJS(`${environment.DOMAIN}/ws`);
     this.stompClient = Stomp.over(ws);
     this.stompClient.debug = () => { };
     const _this = this;
@@ -52,12 +52,12 @@ export class NotificationService {
   }
 
   onMessageReceived(message) {
-    let json = JSON.parse(message.body)
+    const json = JSON.parse(message.body)
     if (json['type'] == "USER_MESSAGE_ADDED") {
-      let data = json['data'] as UserMessage
+      const data = json['data'] as UserMessage
       this.dataService.updateUserMessages([data])
     } else if (json['type'] == "USER_CONVERSATION_UPDATED" || json['type'] == "USER_CONVERSATION_ADDED") {
-      let data = json['data'] as FriendProfile
+      const data = json['data'] as FriendProfile
       this.dataService.updateFriends([data])
     } else {
       console.log(json)

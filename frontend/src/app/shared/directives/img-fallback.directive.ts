@@ -12,7 +12,7 @@ export class ImgFallbackDirective {
 
   @HostListener('error')
   loadFallbackOnError() {
-    const element: HTMLImageElement = <HTMLImageElement>this.eRef.nativeElement;
+    const element: HTMLImageElement = this.eRef.nativeElement as HTMLImageElement;
     element.src = this.appImgFallback || 'https://avatar.iran.liara.run/public';
   }
 

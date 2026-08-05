@@ -17,7 +17,7 @@ export class ChatComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit(): void {
-    this.notificationService.suscribe()
+    this.notificationService.suscribe();
   }
 
 }

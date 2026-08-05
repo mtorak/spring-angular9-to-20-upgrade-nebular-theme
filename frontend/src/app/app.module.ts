@@ -6,7 +6,7 @@ import { NbThemeModule, NbLayoutModule, NbMenuModule, NbDialogModule, NbToastrMo
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 
 import { AppRoutingModule } from './app-routing.module';
-import { AuthModule } from "./auth/auth.module";
+import { AuthModule } from './auth/auth.module';
 
 import { AppComponent } from './app.component';
 import { HomeModule } from './home/home.module';

@@ -16,7 +16,7 @@ import { NbToastrService } from '@nebular/theme';
 })
 export class SignupComponent implements OnInit {
 
-  loading: Boolean = false
+  loading = false
   signUpFrom: UntypedFormGroup
 
   constructor(
@@ -38,7 +38,7 @@ export class SignupComponent implements OnInit {
 
   register() {
     if (this.signUpFrom.valid) {
-      let data = this.signUpFrom.value
+      const data = this.signUpFrom.value
       this.loading = true
       this._authService.register(new SignUpRequest(data['name'], data['email'], data['password'])).subscribe(
         (response: ApiResponse) => {

@@ -9,7 +9,7 @@ import { NbToastrService } from '@nebular/theme';
 })
 export class ForgotPasswordComponent implements OnInit {
 
-  loading: Boolean = false
+  loading = false
   
   constructor() { }
 

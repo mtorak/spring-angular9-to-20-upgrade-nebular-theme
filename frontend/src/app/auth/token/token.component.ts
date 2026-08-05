@@ -13,7 +13,7 @@ import { delay } from 'rxjs/operators';
 })
 export class TokenComponent implements OnInit {
 
-  loading: Boolean = true
+  loading = true
   profile: UserProfile
   token: string
   redirect = "/loading"

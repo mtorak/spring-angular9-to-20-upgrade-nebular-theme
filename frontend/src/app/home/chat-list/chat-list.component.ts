@@ -20,7 +20,7 @@ export class ChatListComponent implements OnInit, OnDestroy {
 
   profile: UserProfile;
   friends: Observable<FriendProfile[]>;
-  searchValue: string = '';
+  searchValue = '';
   private menuSubscription: Subscription;
 
   menu = [

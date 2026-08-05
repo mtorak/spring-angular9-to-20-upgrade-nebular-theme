@@ -21,22 +21,23 @@ export class LoadingComponent implements OnInit {
       .subscribe(
         {
           next: (data: any) => {
-            this.chatService.updateFetch(10)
+            this.chatService.updateFetch(10);
           },
           error: (error: any) => {
             console.log(error);
-            if (error instanceof HttpErrorResponse && (<HttpErrorResponse>error).status == 401)
+            if (error instanceof HttpErrorResponse && (error as HttpErrorResponse).status === 401) {
               this.userService.logout();
+            }
           },
           complete: () => { }
         }
       );
 
     this.chatService.fetchFriends().subscribe((output) => {
-      this.chatService.updateFetch(20)
+      this.chatService.updateFetch(20);
       this.chatService.fetchAllMessages().subscribe(v => {
-        this.chatService.updateFetch(100)
-      })
+        this.chatService.updateFetch(100);
+      });
     });
 
   }

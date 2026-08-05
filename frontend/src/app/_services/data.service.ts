@@ -7,26 +7,26 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class DataService {
 
-  private _friends: BehaviorSubject<Map<string, FriendProfile>> = new BehaviorSubject(new Map());
+  private _friends = new BehaviorSubject<Map<string, FriendProfile>>(new Map());
   // public readonly friends: Observable<Map<string, FriendProfile>> = this._friends.asObservable();
 
-  private _userMessages: BehaviorSubject<Map<string, UserMessage>> = new BehaviorSubject(new Map());
+  private _userMessages = new BehaviorSubject<Map<string, UserMessage>>(new Map());
 
   constructor() {
     console.log('DataService constructor called!');
   }
 
   updateUserMessages(msgs: UserMessage[]) {
-    let oldMsgs = this._userMessages.value
+    const oldMsgs = this._userMessages.value
     msgs.map(msg => oldMsgs.set(msg.id, msg))
     this._userMessages.next(oldMsgs)
     this.sortFriends()
   }
 
   updateFriends(newFriends: FriendProfile[]) {
-    let friends = this._friends.value
+    const friends = this._friends.value
     newFriends.map(v => {
-      let friend = friends.get(v.id)
+      const friend = friends.get(v.id)
       if (friend) {
         friend.update(v.id, v.email, v.name, v.imgUrl, v.blockedBy, v.updatedAt)
       } else { friends.set(v.id, v) }
@@ -35,21 +35,21 @@ export class DataService {
   }
 
   sortFriends() {
-    let msgs = this._userMessages.value
-    let friends = this._friends.value
+    const msgs = this._userMessages.value
+    const friends = this._friends.value
 
     msgs.forEach((msg, k) => {
-      let friend = friends.get(msg.chatId)
+      const friend = friends.get(msg.chatId)
       if (friend.lastMsgAt < msg.createdAt) { friend.updateConv(msg.content, msg.createdAt) }
       // if (!msg.readAt) { friend.incrementUnread() }
     })
     this._friends.next(friends)
   }
 
-  getMessages(chatId: String): Observable<UserMessage[]> {
+  getMessages(chatId: string): Observable<UserMessage[]> {
     return this._userMessages.pipe(
       map(m => {
-        let msgs: UserMessage[] = []
+        const msgs: UserMessage[] = []
         m.forEach((v, k) => { if (v.chatId == chatId) msgs.push(v) })
         // msgs.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
         return msgs
@@ -60,7 +60,7 @@ export class DataService {
   getFriends(search?: string): Observable<FriendProfile[]> {
     return this._friends.pipe(
       map(m => {
-        let friends: FriendProfile[] = []
+        const friends: FriendProfile[] = []
         m.forEach((v, k) => {
           if (!search || v.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
             || v.email.toLocaleLowerCase().includes(search.toLocaleLowerCase()))

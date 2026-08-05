@@ -4,13 +4,13 @@ export class NbMessage {
     date: Date
     files = []
     text: string
-    quote: string = ""
+    quote = ""
     sender: string
     type: string
-    avatar: string = ""
+    avatar = ""
     reply: boolean
-    latitude: number = 0
-    longitude: number = 0
+    latitude = 0
+    longitude = 0
 
     constructor(msg: UserMessage) {
         this.date = msg.createdAt

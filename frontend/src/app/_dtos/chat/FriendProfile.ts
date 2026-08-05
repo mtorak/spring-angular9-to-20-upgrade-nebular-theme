@@ -5,9 +5,9 @@ export class FriendProfile {
     name: string
     imgUrl: string
     blockedBy: string
-    lastMsg: string = ""
+    lastMsg = ""
     lastMsgAt: Date
-    unreadMsgs: number = 0
+    unreadMsgs = 0
     updatedAt: Date
 
     constructor(id: string, email: string, name: string, imgUrl: string, blockedBy: string, updatedAt: string) {
